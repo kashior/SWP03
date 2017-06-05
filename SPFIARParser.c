@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "SPFIARParser.h"
 
 bool spParserIsInt(const char* str){
@@ -17,7 +18,69 @@ bool spParserIsInt(const char* str){
     return true;
 }
 
-SPCommand spParserPraseLine(const char* str){
-    const char delimiter = "\t\r\n";
-    char* token = strtok(str,delimiter);
+SP_COMMAND getSPComand(char* token){
+    if (strcmp(token, "undo_move") == 0)
+    {
+        return SP_UNDO_MOVE;
+    }
+    else if (strcmp(token, "add_disc") == 0)
+    {
+        return SP_ADD_DISC;
+
+    }else if (strcmp(token, "suggest_move") == 0)
+    {
+        return SP_SUGGEST_MOVE;
+    }else if (strcmp(token, "quit") == 0)
+    {
+        return SP_QUIT;
+    }else if (strcmp(token, "restart") == 0)
+    {
+        return SP_RESTART;
+    }
+    else
+    {
+        return SP_INVALID_LINE;
+    }
 }
+
+SPCommand spParserPraseLine(const char* str){ //TODO what if we get more then 2 tokens?
+    char str2[1024];
+    strcpy(str2, str);
+    const char delimiter[15] = " \t\r\n";
+    char* token = strtok(str2,delimiter);
+    SPCommand result;
+    result.cmd = getSPComand(token);
+
+    token = strtok(NULL, delimiter);
+    if (result.cmd == SP_INVALID_LINE){
+        result.validArg = false;
+        printf("error0 not legal command");
+    }
+    else if (result.cmd != SP_ADD_DISC && token != NULL){
+        printf("error1 not legal command");
+        result.validArg = false;
+    }
+    else if (result.cmd == SP_ADD_DISC && token == NULL){
+        printf("error2 not legal command");
+        result.validArg = false;
+    }
+    else if (result.cmd != SP_ADD_DISC && token == NULL){
+        result.validArg = true;
+    }
+    else if (result.cmd == SP_ADD_DISC && token != NULL){
+        if (!spParserIsInt(token)){
+            printf("error3 not legal command - the second is not a number");
+            result.validArg = false;
+        }
+        else{
+            result.arg = atoi(token);
+            result.validArg = true;
+        }
+    }
+    return result;
+}
+
+
+
+
+
