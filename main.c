@@ -16,10 +16,20 @@ int main() {
 //
 //    printf("%d\n",com.cmd == SP_INVALID_LINE);
     SPArrayList* sym=spArrayListCreate(20);
-    sym->elements[0]=3;
-    sym->elements[1]=4;
-    sym->elements[2]=5;
+//    sym->elements[0]=3;
+//    sym->elements[1]=4;
+//    sym->elements[2]=5;
+    spArrayListAddFirst(sym, 13);
+    spArrayListAddFirst(sym, 23);
+    spArrayListAddFirst(sym, 5);
+    printf("%d\n", sym->elements[2]);
+    printf("%d\n", sym->elements[7]);
+//    spArrayListRemoveFirst(sym);
+    spArrayListAddAt(sym, 15, 1);
     SPArrayList* syn=spArrayListCopy(sym);
+    spArrayListRemoveLast(sym);
+    printf("%d\n", spArrayListGetLast(sym));
+    printf("%d\n", spArrayListGetFirst(sym));
 
 
 
