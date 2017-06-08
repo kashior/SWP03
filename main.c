@@ -79,20 +79,22 @@ static bool spFIARGameBasicTest() {
 }
 
 int main() {
-    RUN_TEST(spFIARGameBasicTest);
-    RUN_TEST(spFiarGameSetMoveTest);
-    RUN_TEST(spFiarGameUndoMoveTest);
-    RUN_TEST(spFiarGameUndoMoveTest2);
-    RUN_TEST(spFiarGameValidMoveTest);
-//    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-//    ASSERT_TRUE(res!=NULL);
-//    int repeat = 6;
-//    while (repeat-- > 0) {
-//        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
-//            ASSERT_TRUE(spFiarGameSetMove(res, i) == SP_FIAR_GAME_SUCCESS);
-//        }
-//    }
-//    spFiarGamePrintBoard(res);
-//    spFiarGameDestroy(res);
+//    RUN_TEST(spFIARGameBasicTest);
+//    RUN_TEST(spFiarGameSetMoveTest);
+//    RUN_TEST(spFiarGameUndoMoveTest);
+//    RUN_TEST(spFiarGameUndoMoveTest2);
+//    RUN_TEST(spFiarGameValidMoveTest);
+
+    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
+    ASSERT_TRUE(res!=NULL);
+    int repeat = SP_FIAR_GAME_N_ROWS;
+    while (repeat-- > 0) {
+        ASSERT_TRUE(spFiarGameSetMove(res, 2) == SP_FIAR_GAME_SUCCESS);
+
+    }
+    ASSERT_FALSE(spFiarGameIsValidMove(res, 2));
+    ASSERT_TRUE(spFiarGameSetMove(res,2)==SP_FIAR_GAME_INVALID_MOVE);
+    spFiarGamePrintBoard(res);
+    spFiarGameDestroy(res);
     return 0;
 }
