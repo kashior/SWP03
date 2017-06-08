@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "SPArrayList.h"
 
-SPArrayList* spArrayListCreate(int maxSize) { //TODO what about initializing the elements and actualsize
+SPArrayList *spArrayListCreate(int maxSize) { //TODO what about initializing the elements and actualsize
     if (maxSize <= 0) {
         return NULL;
     }
-    SPArrayList* arr = (SPArrayList*) malloc(sizeof(SPArrayList));
+    SPArrayList *arr = (SPArrayList *) malloc(sizeof(SPArrayList));
     if (arr == NULL)
         return NULL;
     arr->maxSize = maxSize;
@@ -15,18 +15,18 @@ SPArrayList* spArrayListCreate(int maxSize) { //TODO what about initializing the
     if (arr->elements == NULL) {
         free(arr);
         return NULL;
-}
+    }
 
 
     return arr;
 }
 
-SPArrayList* spArrayListCopy(SPArrayList *src) {
-    SPArrayList* arr = (SPArrayList*)malloc(src->maxSize * sizeof(int));
+SPArrayList *spArrayListCopy(SPArrayList *src) {
+    SPArrayList *arr = (SPArrayList *) malloc(src->maxSize * sizeof(int));
     if (arr == NULL || src->elements == NULL)
         return NULL;
     arr->elements = (int *) malloc(src->maxSize * sizeof(int));
-    if (arr->elements== NULL){
+    if (arr->elements == NULL) {
         free(arr);
         return NULL;
     }
@@ -77,29 +77,29 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList *src, int elem) {
     return spArrayListAddAt(src, elem, src->actualSize);
 }
 
-SP_ARRAY_LIST_MESSAGE spArrayListRemoveAt(SPArrayList* src, int index) {
+SP_ARRAY_LIST_MESSAGE spArrayListRemoveAt(SPArrayList *src, int index) {
     if (src == NULL || index > src->actualSize || index < 0)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     if (src->actualSize == 0)
         return SP_ARRAY_LIST_EMPTY;
-    for (int i = index; i < src->actualSize-1; i++)
+    for (int i = index; i < src->actualSize - 1; i++)
         src->elements[i] = src->elements[i + 1];
-    src->elements[src->actualSize-1] = 0;
+    src->elements[src->actualSize - 1] = 0;
     src->actualSize--;
     return SP_ARRAY_LIST_SUCCESS;
 }
 
-SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList* src){
+SP_ARRAY_LIST_MESSAGE spArrayListRemoveFirst(SPArrayList *src) {
     return spArrayListRemoveAt(src, 0);
 
 }
 
 
-SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src){
-    return spArrayListRemoveAt(src, src->actualSize-1);
+SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList *src) {
+    return spArrayListRemoveAt(src, src->actualSize - 1);
 }
 
-int spArrayListGetAt(SPArrayList* src, int index){ //TODO is -1 ok?
+int spArrayListGetAt(SPArrayList *src, int index) { //TODO is -1 ok?
     if (src == NULL || index >= src->actualSize || index < 0)
         return -1;
     if (src->actualSize == 0)
@@ -107,33 +107,33 @@ int spArrayListGetAt(SPArrayList* src, int index){ //TODO is -1 ok?
     return src->elements[index];
 }
 
-int spArrayListGetFirst(SPArrayList* src){
+int spArrayListGetFirst(SPArrayList *src) {
     return spArrayListGetAt(src, 0);
 }
 
-int spArrayListGetLast(SPArrayList* src){
-    return spArrayListGetAt(src, src->actualSize-1);
+int spArrayListGetLast(SPArrayList *src) {
+    return spArrayListGetAt(src, src->actualSize - 1);
 }
 
-int spArrayListMaxCapacity(SPArrayList* src){ //TODO is -1 ok?
-    if (src==NULL)
+int spArrayListMaxCapacity(SPArrayList *src) { //TODO is -1 ok?
+    if (src == NULL)
         return -1;
     return src->maxSize;
 }
 
-int spArrayListSize(SPArrayList* src){
-    if (src==NULL)
+int spArrayListSize(SPArrayList *src) {
+    if (src == NULL)
         return -1;
     return src->actualSize;
 }
 
-bool spArrayListIsFull(SPArrayList* src){
-    if (src==NULL)
+bool spArrayListIsFull(SPArrayList *src) {
+    if (src == NULL)
         return false;
     return src->actualSize == src->maxSize;
 }
 
-bool spArrayListIsEmpty(SPArrayList* src) {
+bool spArrayListIsEmpty(SPArrayList *src) {
     if (src == NULL)
         return false;
     return src->actualSize == 0;

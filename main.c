@@ -1,100 +1,76 @@
 #include "unit_test_util.h"
-#include "SPFIARGame.h"
+#include "SPArrayList.h"
 #include <stdbool.h>
 
-#define HISTORY_SIZE 20
+#define CAPACITY_SIZE 10
 
-static bool spFiarGameValidMoveTest() {
-    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    ASSERT_TRUE(res!=NULL);
-    int repeat = SP_FIAR_GAME_N_ROWS;
-    while (repeat-- > 0) {
-        ASSERT_TRUE(spFiarGameSetMove(res, 2) == SP_FIAR_GAME_SUCCESS);
-
+static bool spArrayListBasicGetTest() {
+    SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
+    ASSERT_TRUE(list != NULL);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListAddLast(list, i) == SP_ARRAY_LIST_SUCCESS);
     }
-    ASSERT_FALSE(spFiarGameIsValidMove(res, 2));
-    ASSERT_TRUE(spFiarGameSetMove(res,2)==SP_FIAR_GAME_INVALID_MOVE);
-    spFiarGamePrintBoard(res);
-    spFiarGameDestroy(res);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListGetAt(list, i) == i);
+    }
+    spArrayListDestroy(list);
     return true;
 }
 
-static bool spFiarGameUndoMoveTest2() {
-    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    ASSERT_TRUE(res!=NULL);
-    int repeat = 3;
-    while (repeat-- > 0) {
-        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
-            ASSERT_TRUE(spFiarGameSetMove(res, i) == SP_FIAR_GAME_SUCCESS);
-        }
+static bool spArrayListBasicCopyTest() {
+    SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
+    ASSERT_TRUE(list!=NULL);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListAddFirst(list, i) == SP_ARRAY_LIST_SUCCESS);
     }
-    repeat = 20;
-    while (repeat-- > 0) {
-        ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_SUCCESS);
+    SPArrayList* copyList = spArrayListCopy(list);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListGetAt(copyList, i) == spArrayListGetAt(list, i));
     }
-    ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_NO_HISTORY);
-    spFiarGamePrintBoard(res);
-    spFiarGameDestroy(res);
-    return true;
-}
-static bool spFiarGameUndoMoveTest() {
-    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    ASSERT_TRUE(res!=NULL);
-    int repeat = 2;
-    while (repeat-- > 0) {
-        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
-            ASSERT_TRUE(spFiarGameSetMove(res, i) == SP_FIAR_GAME_SUCCESS);
-        }
-    }
-    repeat = 2;
-    while (repeat-- > 0) {
-        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
-            ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_SUCCESS);
-        }
-    }
-	spFiarGamePrintBoard(res);
-    spFiarGameDestroy(res);
+    spArrayListDestroy(list);
+    spArrayListDestroy(copyList);
     return true;
 }
 
-static bool spFiarGameSetMoveTest() {
-    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    ASSERT_TRUE(res!=NULL);
-    int repeat = 2;
-    while (repeat-- > 0) {
-        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
-            ASSERT_TRUE(spFiarGameSetMove(res, i) == SP_FIAR_GAME_SUCCESS);
-        }
+static bool spArrayListBasicRemoveTest() {
+    SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
+    ASSERT_TRUE(list!=NULL);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListAddFirst(list, i) == SP_ARRAY_LIST_SUCCESS);
     }
-	spFiarGamePrintBoard(res);
-    spFiarGameDestroy(res);
+    ASSERT_TRUE(spArrayListSize(list) == CAPACITY_SIZE);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListRemoveFirst(list) == SP_ARRAY_LIST_SUCCESS);
+        ASSERT_TRUE(spArrayListSize(list) == CAPACITY_SIZE - i - 1);
+    }
+    ASSERT_TRUE(spArrayListIsEmpty(list));
+    spArrayListDestroy(list);
     return true;
 }
 
-static bool spFIARGameBasicTest() {
-    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    ASSERT_TRUE(res!=NULL);
-    spFiarGameDestroy(res);
+static bool spArrayListBasicAddTest() {
+    SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
+    ASSERT_TRUE(list!=NULL);
+    for (int i = 0; i < CAPACITY_SIZE; i++) {
+        ASSERT_TRUE(spArrayListAddFirst(list, i) == SP_ARRAY_LIST_SUCCESS);
+        ASSERT_TRUE(spArrayListSize(list) == i + 1);
+    }
+    ASSERT_TRUE(spArrayListSize(list) == CAPACITY_SIZE);
+    spArrayListDestroy(list);
+    return true;
+}
+static bool spArrayListCreateTest() {
+    SPArrayList* list = spArrayListCreate(CAPACITY_SIZE);
+    ASSERT_TRUE(list != NULL);
+    spArrayListDestroy(list);
     return true;
 }
 
 int main() {
-//    RUN_TEST(spFIARGameBasicTest);
-//    RUN_TEST(spFiarGameSetMoveTest);
-//    RUN_TEST(spFiarGameUndoMoveTest);
-//    RUN_TEST(spFiarGameUndoMoveTest2);
-//    RUN_TEST(spFiarGameValidMoveTest);
-
-    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    ASSERT_TRUE(res!=NULL);
-    int repeat = SP_FIAR_GAME_N_ROWS;
-    while (repeat-- > 0) {
-        ASSERT_TRUE(spFiarGameSetMove(res, 2) == SP_FIAR_GAME_SUCCESS);
-
-    }
-    ASSERT_FALSE(spFiarGameIsValidMove(res, 2));
-    ASSERT_TRUE(spFiarGameSetMove(res,2)==SP_FIAR_GAME_INVALID_MOVE);
-    spFiarGamePrintBoard(res);
-    spFiarGameDestroy(res);
+    RUN_TEST(spArrayListCreateTest);
+    RUN_TEST(spArrayListBasicAddTest);
+    RUN_TEST(spArrayListBasicRemoveTest);
+    RUN_TEST(spArrayListBasicGetTest);
+    RUN_TEST(spArrayListBasicCopyTest);
     return 0;
 }

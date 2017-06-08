@@ -222,7 +222,7 @@ char diagonalWinner(SPFiarGame *src) {
 }
 
 
-char spFiarCheckWinner(SPFiarGame *src) {
+char spFiarCheckWinner(SPFiarGame *src) { //TODO check for  tie
     char winner = rowsColumnsWinner(src, SP_FIAR_GAME_N_ROWS, SP_FIAR_GAME_N_COLUMNS);
     if (winner != '\0')
         return winner;
