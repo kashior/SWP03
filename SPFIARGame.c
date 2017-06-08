@@ -9,6 +9,8 @@ SPFiarGame *spFiarGameCreate(int historySize) {
     if (game == NULL) {
         return NULL;
     }
+    for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++)
+        game->tops[i] = 0;
     game->history = spArrayListCreate(historySize);
     if (game->history == NULL)
         return NULL;
