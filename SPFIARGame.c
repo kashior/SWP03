@@ -78,7 +78,7 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
         return SP_FIAR_GAME_NO_HISTORY;
     int col =spArrayListGetFirst(src->history);
     SP_ARRAY_LIST_MESSAGE msg =spArrayListRemoveFirst(src->history);
-    if (msg==SP_ARRAY_LIST_EMPTY || msg = SP_ARRAY_LIST_INVALID_ARGUMENT)
+    if (msg==SP_ARRAY_LIST_EMPTY || msg == SP_ARRAY_LIST_INVALID_ARGUMENT)
         return SP_FIAR_GAME_NO_HISTORY;
     src->gameBoard[src->tops[col]-1][col]='\0';
     src->tops[col]--;

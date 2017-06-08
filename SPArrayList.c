@@ -26,6 +26,10 @@ SPArrayList* spArrayListCopy(SPArrayList *src) {
     if (arr == NULL || src->elements == NULL)
         return NULL;
     arr->elements = (int *) malloc(src->maxSize * sizeof(int));
+    if (arr->elements== NULL){
+        free(arr);
+        return NULL;
+    }
     for (int i = 0; i < src->actualSize; i++)
         arr->elements[i] = src->elements[i];
     arr->actualSize = src->actualSize;
