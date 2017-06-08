@@ -145,8 +145,8 @@ char spFiarGameGetCurrentPlayer(SPFiarGame *src) {
 
 char checkSymbol(SPFiarGame *src, int row, int col, int *player1Counter, int *player2Counter) {
     if (src->gameBoard[row][col] == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
-        player2Counter = 0;
-        player1Counter++;
+        (*player2Counter) = 0;
+        (*player1Counter)++;
     } else if (src->gameBoard[row][col] == SP_FIAR_GAME_PLAYER_2_SYMBOL) {
         (*player1Counter) = 0;
         (*player2Counter)++;
@@ -167,10 +167,14 @@ char checkSymbol(SPFiarGame *src, int row, int col, int *player1Counter, int *pl
 char rowsColumnsWinner(SPFiarGame *src, int outer, int inner) {
     int player1Counter = 0;
     int player2Counter = 0;
+    char winner;
 
     for (int i = 0; i < outer; i++) {
         for (int j = i; j < inner; j++) {
-            char winner = checkSymbol(src, i, j, &player1Counter, &player2Counter);
+            if(outer == SP_FIAR_GAME_N_ROWS)
+                winner = checkSymbol(src, i, j, &player1Counter, &player2Counter);
+            else
+                winner = checkSymbol(src, j, i, &player1Counter, &player2Counter);
             if (winner != '\0')
                 return winner;
         }
@@ -222,7 +226,7 @@ char diagonalWinner(SPFiarGame *src) {
 }
 
 
-char spFiarCheckWinner(SPFiarGame *src) { //TODO check for  tie
+char spFiarCheckWinner(SPFiarGame *src) {
     char winner = rowsColumnsWinner(src, SP_FIAR_GAME_N_ROWS, SP_FIAR_GAME_N_COLUMNS);
     if (winner != '\0')
         return winner;
@@ -232,5 +236,12 @@ char spFiarCheckWinner(SPFiarGame *src) { //TODO check for  tie
         return winner;
 
     winner = diagonalWinner(src);
-    return winner;
+    if (winner != '\0')
+        return winner;
+
+    for (int j=0; j< SP_FIAR_GAME_N_COLUMNS; j++){
+        if (src->tops[j] < SP_FIAR_GAME_N_ROWS)
+            return '\0';
+    }
+    return SP_FIAR_GAME_TIE_SYMBOL;
 }
