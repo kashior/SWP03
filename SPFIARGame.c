@@ -117,7 +117,7 @@ char checkSymbol(SPFiarGame *src, int row, int col, int *player1Counter, int *pl
     if ((*player2Counter) == 4) {
         return SP_FIAR_GAME_PLAYER_2_SYMBOL;
     }
-    return NULL;
+    return '\0';
 }
 
 
@@ -128,11 +128,11 @@ char rowsColumnsWinner(SPFiarGame *src, int outer, int inner) {
     for (int i = 0; i < outer; i++) {
         for (int j = i; j < inner; j++) {
             char winner = checkSymbol(src, i, j, &player1Counter, &player2Counter);
-            if (winner != NULL)
+            if (winner != '\0')
                 return winner;
         }
     }
-    return NULL;
+    return '\0';
 }
 
 char diagonalWinner(SPFiarGame *src) {
@@ -143,7 +143,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS - SP_FIAR_GAME_SPAN + 1; i++) {
         for (int row = 0, col = i; row < SP_FIAR_GAME_N_ROWS && col < SP_FIAR_GAME_N_COLUMNS; row++, col++) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != NULL)
+            if (winner != '\0')
                 return winner;
         }
     }
@@ -152,7 +152,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = 1; i < SP_FIAR_GAME_N_ROWS - SP_FIAR_GAME_SPAN + 1; i++) {
         for (int row = i, col = 0; row < SP_FIAR_GAME_N_ROWS && col < SP_FIAR_GAME_N_COLUMNS; row++, col++) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != NULL)
+            if (winner != '\0')
                 return winner;
         }
     }
@@ -161,7 +161,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = SP_FIAR_GAME_N_COLUMNS-1; i >= SP_FIAR_GAME_SPAN - 1; i--) {
         for (int row = 0, col = i; row < SP_FIAR_GAME_N_ROWS && col >= 0; row++, col--) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != NULL)
+            if (winner != '\0')
                 return winner;
         }
     }
@@ -170,7 +170,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = 1; i < SP_FIAR_GAME_N_ROWS - SP_FIAR_GAME_SPAN + 1; i++) {
         for (int row = i, col = SP_FIAR_GAME_N_COLUMNS-1; row < SP_FIAR_GAME_N_ROWS && col >=0; row++, col--) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != NULL)
+            if (winner != '\0')
                 return winner;
         }
     }
@@ -181,11 +181,11 @@ char diagonalWinner(SPFiarGame *src) {
 
 char spFiarCheckWinner(SPFiarGame *src) {
     char winner = rowsColumnsWinner(src, SP_FIAR_GAME_N_ROWS, SP_FIAR_GAME_N_COLUMNS);
-    if (winner != NULL)
+    if (winner != '\0')
         return winner;
 
     winner = rowsColumnsWinner(src, SP_FIAR_GAME_N_COLUMNS, SP_FIAR_GAME_N_ROWS);
-    if (winner != NULL)
+    if (winner != '\0')
         return winner;
 
     winner = diagonalWinner(src);
