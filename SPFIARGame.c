@@ -101,29 +101,30 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
             playBoard[i][j] = '\0';
         }
     }
-    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++){
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS+2; i++){
         for (int j = 0; j<SP_FIAR_GAME_N_COLUMNS*2 +3; j++){
 
             if (j==0 || j==SP_FIAR_GAME_N_COLUMNS*2 +2){
                 playBoard[i][j] = '|';
-                playBoard[7][j] = 32;
+                playBoard[SP_FIAR_GAME_N_ROWS+1][j] = 32;
             }
             else if (j%2==1){
                 playBoard[i][j] = 32;
-                playBoard[7][j] = 32;
+                playBoard[SP_FIAR_GAME_N_ROWS+1][j] = 32;
             }
 
             else {
                 toPrint = src->gameBoard[i][j];
-                toPrint =  toPrint ? toPrint != '\0' : (char)32;
+                if (toPrint != SP_FIAR_GAME_PLAYER_1_SYMBOL && toPrint != SP_FIAR_GAME_PLAYER_2_SYMBOL)
+                    toPrint = 32;
                 playBoard[i][j] = toPrint;
-                playBoard[7][j] = (j/2) + '0';
+                playBoard[SP_FIAR_GAME_N_ROWS+1][j] = (j/2) + '0';
             }
-            playBoard[6][j] = 45;
-
+            playBoard[SP_FIAR_GAME_N_ROWS][j] = 45;
         }
     }
-    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++) {
+    
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS+2; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS * 2 + 3; j++) {
             if (j == SP_FIAR_GAME_N_COLUMNS * 2 + 2)
                 printf("%c\n", playBoard[i][j]);

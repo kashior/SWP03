@@ -79,10 +79,10 @@ static bool spFIARGameBasicTest() {
 }
 
 int main() {
-//    RUN_TEST(spFIARGameBasicTest);
-//    RUN_TEST(spFiarGameSetMoveTest);
-//    RUN_TEST(spFiarGameUndoMoveTest);
-//    RUN_TEST(spFiarGameUndoMoveTest2);
-//    RUN_TEST(spFiarGameValidMoveTest);
+    RUN_TEST(spFIARGameBasicTest);
+    RUN_TEST(spFiarGameSetMoveTest);
+    RUN_TEST(spFiarGameUndoMoveTest);
+    RUN_TEST(spFiarGameUndoMoveTest2);
+    RUN_TEST(spFiarGameValidMoveTest);
     return 0;
 }
