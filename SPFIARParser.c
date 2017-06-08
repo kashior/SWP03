@@ -54,14 +54,11 @@ SPCommand spParserPraseLine(const char* str){ //TODO what if we get more then 2 
     token = strtok(NULL, delimiter);
     if (result.cmd == SP_INVALID_LINE){
         result.validArg = false;
-        printf("error0 not legal command");
     }
     else if (result.cmd != SP_ADD_DISC && token != NULL){
-        printf("error1 not legal command");
         result.validArg = false;
     }
     else if (result.cmd == SP_ADD_DISC && token == NULL){
-        printf("error2 not legal command");
         result.validArg = false;
     }
     else if (result.cmd != SP_ADD_DISC && token == NULL){
@@ -69,7 +66,6 @@ SPCommand spParserPraseLine(const char* str){ //TODO what if we get more then 2 
     }
     else if (result.cmd == SP_ADD_DISC && token != NULL){
         if (!spParserIsInt(token)){
-            printf("error3 not legal command - the second is not a number");
             result.validArg = false;
         }
         else{
