@@ -1,5 +1,6 @@
 #include "unit_test_util.h"
 #include "SPFIARGame.h"
+#include "SPMiniMaxNode.h"
 #include <stdbool.h>
 
 #define HISTORY_SIZE 20
@@ -79,41 +80,46 @@ static bool spFIARGameBasicTest() {
 }
 
 int main() {
-//    RUN_TEST(spFIARGameBasicTest);
-//    RUN_TEST(spFiarGameSetMoveTest);
-//    RUN_TEST(spFiarGameUndoMoveTest);
-//    RUN_TEST(spFiarGameUndoMoveTest2);
-//    RUN_TEST(spFiarGameValidMoveTest);
+
     SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
-    for (int i = 0; i<4; i++) {
-        spFiarGameSetMove(res, i);
-
-    }
-    for (int i = 0; i<4; i++) {
-        spFiarGameSetMove(res, i);
-
-    }
-    for (int i = 1; i<5; i++) {
-        spFiarGameSetMove(res, i);
-
-    }
-    for (int i = 2; i<4; i++) {
-        spFiarGameSetMove(res, i);
-
-    }
-    spFiarGameSetMove(res, 3);
-
-
-//    ASSERT_TRUE(res!=NULL);
-//    int repeat = SP_FIAR_GAME_N_ROWS+1;
-//    while (repeat-- > 0) {
-//        ASSERT_TRUE(spFiarGameSetMove(res,(repeat % 2)) == SP_FIAR_GAME_SUCCESS);
+//    for (int i = 0; i<4; i++) {
+//        spFiarGameSetMove(res, i);
 //
 //    }
-//    ASSERT_FALSE(spFiarGameIsValidMove(res, 2));
-//    ASSERT_TRUE(spFiarGameSetMove(res,2)==SP_FIAR_GAME_INVALID_MOVE);
+//    for (int i = 0; i<4; i++) {
+//        spFiarGameSetMove(res, i);
+//
+//    }
+//    for (int i = 1; i<5; i++) {
+//        spFiarGameSetMove(res, i);
+//
+//    }
+//    for (int i = 2; i<4; i++) {
+//        spFiarGameSetMove(res, i);
+//
+//    }
+//    spFiarGameSetMove(res, 3);
+//
+//
+//    spFiarGamePrintBoard(res);
+//    char winner = spFiarCheckWinner(res);
+    spFiarGameSetMove(res, 1);
+    spFiarGameSetMove(res, 6);
+    spFiarGameSetMove(res, 1);
+    spFiarGameSetMove(res, 5);
+    spFiarGameSetMove(res, 4);
+    spFiarGameSetMove(res, 3);
+    spFiarGameSetMove(res, 2);
+    spFiarGameSetMove(res, 3);
+    spFiarGameSetMove(res, 3);
+    spFiarGameSetMove(res, 1);
+    spFiarGameSetMove(res, 1);
+    spFiarGameSetMove(res, 2);
+    spFiarGameSetMove(res, 1);
+    spFiarGameSetMove(res, 2);
     spFiarGamePrintBoard(res);
-    char winner = spFiarCheckWinner(res);
+    SPMiniMaxNode *node = createNode(0,0,true,res,SP_FIAR_GAME_PLAYER_1_SYMBOL);
+    int x = scoringFunction(res, node);
     spFiarGameDestroy(res);
     return 0;
 }
