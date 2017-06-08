@@ -14,7 +14,7 @@ static bool spFiarGameValidMoveTest() {
     }
     ASSERT_FALSE(spFiarGameIsValidMove(res, 2));
     ASSERT_TRUE(spFiarGameSetMove(res,2)==SP_FIAR_GAME_INVALID_MOVE);
-    //spFiarGamePrintBoard(res);
+    spFiarGamePrintBoard(res);
     spFiarGameDestroy(res);
     return true;
 }
@@ -33,7 +33,7 @@ static bool spFiarGameUndoMoveTest2() {
         ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_SUCCESS);
     }
     ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_NO_HISTORY);
-    //spFiarGamePrintBoard(res);
+//    spFiarGamePrintBoard(res);
     spFiarGameDestroy(res);
     return true;
 }
@@ -79,10 +79,10 @@ static bool spFIARGameBasicTest() {
 }
 
 int main() {
-    RUN_TEST(spFIARGameBasicTest);
-    RUN_TEST(spFiarGameSetMoveTest);
-    RUN_TEST(spFiarGameUndoMoveTest);
-    RUN_TEST(spFiarGameUndoMoveTest2);
-    RUN_TEST(spFiarGameValidMoveTest);
+//    RUN_TEST(spFIARGameBasicTest);
+//    RUN_TEST(spFiarGameSetMoveTest);
+//    RUN_TEST(spFiarGameUndoMoveTest);
+//    RUN_TEST(spFiarGameUndoMoveTest2);
+//    RUN_TEST(spFiarGameValidMoveTest);
     return 0;
 }

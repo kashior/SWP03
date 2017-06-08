@@ -93,6 +93,46 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame *src) {
 
 }
 
+SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
+    char playBoard[SP_FIAR_GAME_N_ROWS+2][SP_FIAR_GAME_N_COLUMNS*2 + 3];
+    char toPrint;
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++) {
+        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS * 2 + 3; j++) {
+            playBoard[i][j] = '\0';
+        }
+    }
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++){
+        for (int j = 0; j<SP_FIAR_GAME_N_COLUMNS*2 +3; j++){
+
+            if (j==0 || j==SP_FIAR_GAME_N_COLUMNS*2 +2){
+                playBoard[i][j] = '|';
+                playBoard[7][j] = 32;
+            }
+            else if (j%2==1){
+                playBoard[i][j] = 32;
+                playBoard[7][j] = 32;
+            }
+
+            else {
+                toPrint = src->gameBoard[i][j];
+                toPrint =  toPrint ? toPrint != '\0' : (char)32;
+                playBoard[i][j] = toPrint;
+                playBoard[7][j] = (j/2) + '0';
+            }
+            playBoard[6][j] = 45;
+
+        }
+    }
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++) {
+        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS * 2 + 3; j++) {
+            if (j == SP_FIAR_GAME_N_COLUMNS * 2 + 2)
+                printf("%c\n", playBoard[i][j]);
+            else
+                printf("%c", playBoard[i][j]);
+        }
+    }
+    return SP_FIAR_GAME_SUCCESS;
+}
 
 char spFiarGameGetCurrentPlayer(SPFiarGame *src) {
     if (src == NULL)
