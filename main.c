@@ -33,7 +33,7 @@ static bool spFiarGameUndoMoveTest2() {
         ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_SUCCESS);
     }
     ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_NO_HISTORY);
-//    spFiarGamePrintBoard(res);
+    spFiarGamePrintBoard(res);
     spFiarGameDestroy(res);
     return true;
 }
@@ -52,7 +52,7 @@ static bool spFiarGameUndoMoveTest() {
             ASSERT_TRUE(spFiarGameUndoPrevMove(res) == SP_FIAR_GAME_SUCCESS);
         }
     }
-//	spFiarGamePrintBoard(res);
+	spFiarGamePrintBoard(res);
     spFiarGameDestroy(res);
     return true;
 }
@@ -66,7 +66,7 @@ static bool spFiarGameSetMoveTest() {
             ASSERT_TRUE(spFiarGameSetMove(res, i) == SP_FIAR_GAME_SUCCESS);
         }
     }
-//	spFiarGamePrintBoard(res);
+	spFiarGamePrintBoard(res);
     spFiarGameDestroy(res);
     return true;
 }
@@ -84,5 +84,15 @@ int main() {
     RUN_TEST(spFiarGameUndoMoveTest);
     RUN_TEST(spFiarGameUndoMoveTest2);
     RUN_TEST(spFiarGameValidMoveTest);
+//    SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
+//    ASSERT_TRUE(res!=NULL);
+//    int repeat = 6;
+//    while (repeat-- > 0) {
+//        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++) {
+//            ASSERT_TRUE(spFiarGameSetMove(res, i) == SP_FIAR_GAME_SUCCESS);
+//        }
+//    }
+//    spFiarGamePrintBoard(res);
+//    spFiarGameDestroy(res);
     return 0;
 }

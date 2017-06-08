@@ -94,6 +94,8 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame *src) {
 }
 
 SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
+    if (src==NULL)
+        return SP_FIAR_GAME_INVALID_ARGUMENT;
     char playBoard[SP_FIAR_GAME_N_ROWS+2][SP_FIAR_GAME_N_COLUMNS*2 + 3];
     char toPrint;
     for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++) {
@@ -101,7 +103,7 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
             playBoard[i][j] = '\0';
         }
     }
-    for (int i= 0; i<SP_FIAR_GAME_N_ROWS+2; i++){
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++){
         for (int j = 0; j<SP_FIAR_GAME_N_COLUMNS*2 +3; j++){
 
             if (j==0 || j==SP_FIAR_GAME_N_COLUMNS*2 +2){
@@ -114,7 +116,7 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
             }
 
             else {
-                toPrint = src->gameBoard[i][j];
+                toPrint = src->gameBoard[SP_FIAR_GAME_N_ROWS-i-1][j/2-1];
                 if (toPrint != SP_FIAR_GAME_PLAYER_1_SYMBOL && toPrint != SP_FIAR_GAME_PLAYER_2_SYMBOL)
                     toPrint = 32;
                 playBoard[i][j] = toPrint;
@@ -123,7 +125,7 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
             playBoard[SP_FIAR_GAME_N_ROWS][j] = 45;
         }
     }
-    
+
     for (int i= 0; i<SP_FIAR_GAME_N_ROWS+2; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS * 2 + 3; j++) {
             if (j == SP_FIAR_GAME_N_COLUMNS * 2 + 2)
