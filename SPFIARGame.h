@@ -160,4 +160,9 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src);
 */
 char spFiarCheckWinner(SPFiarGame* src);
 
+char checkSymbol(SPFiarGame* src, int row, int col, int *player1Counter, int *player2Counter);
+
+char rowsColumnsWinner(SPFiarGame* src, int outer, int inner);
+
+char diagonalWinner(SPFiarGame* src);
 #endif

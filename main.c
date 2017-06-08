@@ -2,6 +2,11 @@
 #include <string.h>
 #include "SPFIARParser.h"
 #include "SPArrayList.h"
+void add(int *i){
+//    printf("printing i: %d\n", i);
+    (*i)++;
+
+}
 
 int main() {
 
@@ -32,9 +37,13 @@ int main() {
     printf("%d\n", spArrayListGetFirst(sym));
 
 
+    int d = 6;
+    add(&d);
 
+    printf("%d", d);
 
 
 
     return 0;
 }
+
