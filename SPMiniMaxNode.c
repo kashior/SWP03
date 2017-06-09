@@ -39,6 +39,18 @@ void updateSpanCounter(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, i
         (*counter)--;
 }
 
+void updateSpanCounterTranspose(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
+    if (src->gameBoard[row -1][col] == node->player)
+        (*counter)--;
+    else if (src->gameBoard[row -1][col] != '\0') // it is the opponent!
+        (*counter)++;
+
+    if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col ] == node->player)
+        (*counter)++;
+    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col ] != '\0') // it is the opponent!
+        (*counter)--;
+}
+
 void updateDiagLTR(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
     if (src->gameBoard[row-1][col - 1] == node->player)
         (*counter)--;
@@ -88,10 +100,11 @@ void rowsColsSpansScoring(SPFiarGame *src, SPMiniMaxNode *node, int *array, int 
             if (rows==SP_FIAR_GAME_N_ROWS)
                 updateSpanCounter(src, node, i,  j, &counter);
             else
-                updateSpanCounter(src, node, j,  i, &counter);
+                updateSpanCounterTranspose(src, node, j, i, &counter);
 
             incrementCellPerSpan(counter, array);
         }
+        counter =0;
     }
 }
 
@@ -110,6 +123,7 @@ void diagonalSpansScoring(SPFiarGame *src, SPMiniMaxNode *node, int *array){
             updateDiagLTR(src,node,row,col,&counter);
             incrementCellPerSpan(counter, array);
         }
+        counter = 0;
     }
 
     // left to top-right (red arrows)
@@ -124,6 +138,7 @@ void diagonalSpansScoring(SPFiarGame *src, SPMiniMaxNode *node, int *array){
             updateDiagLTR(src,node,row,col,&counter);
             incrementCellPerSpan(counter, array);
         }
+        counter = 0;
     }
 
     //bottom-right to top-left (green arrows)
@@ -138,6 +153,7 @@ void diagonalSpansScoring(SPFiarGame *src, SPMiniMaxNode *node, int *array){
             updateDiagRTL(src,node,row,col,&counter);
             incrementCellPerSpan(counter, array);
         }
+        counter = 0;
     }
 
     // right to top-left (red arrows)
@@ -151,6 +167,7 @@ void diagonalSpansScoring(SPFiarGame *src, SPMiniMaxNode *node, int *array){
             updateDiagRTL(src,node,row,col,&counter);
             incrementCellPerSpan(counter, array);
         }
+        counter = 0;
     }
 
 }
@@ -166,12 +183,16 @@ int scoringFunction(SPFiarGame *src, SPMiniMaxNode *node) {
     assert(array!=NULL);
     for (int i = 0 ; i<2*(SP_FIAR_GAME_SPAN-1);i++)
         array[i] = 0;
-
+    int d;
     rowsColsSpansScoring(src, node, array, SP_FIAR_GAME_N_ROWS, SP_FIAR_GAME_N_COLUMNS);
+    for (int i = 0 ; i<2*(SP_FIAR_GAME_SPAN-1);i++)
+        d = array[i];
     rowsColsSpansScoring(src, node, array, SP_FIAR_GAME_N_COLUMNS, SP_FIAR_GAME_N_ROWS);
-
+    for (int i = 0 ; i<2*(SP_FIAR_GAME_SPAN-1);i++)
+        d = array[i];
     diagonalSpansScoring(src, node,  array);
-
+    for (int i = 0 ; i<2*(SP_FIAR_GAME_SPAN-1);i++)
+        array[i] = array[i];
 
     int result = 0;
     for (int i=0; i<2*(SP_FIAR_GAME_SPAN-1); i++)
