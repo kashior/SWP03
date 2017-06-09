@@ -10,16 +10,22 @@ typedef struct sp_minimax_node {
     int alpha;
     int beta;
     bool isMaxType;
-    int score;
     SPFiarGame *game;
     char player;
+    int move;
     //You May add any fields you like
 } SPMiniMaxNode;
 
 
 int scoringFunction(SPFiarGame *currentGame, SPMiniMaxNode *node);
 
-SPMiniMaxNode *createNode(int alpha, int beta, bool isMaxType, SPFiarGame *copyOfGame, char player);
+SPMiniMaxNode *createNode(int alpha, int beta, bool isMaxType, SPFiarGame *copyOfGame, char player, int move);
+
+void *updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth);
+
+SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth);
+
+char changePlayer(char player);
 
 
 #endif

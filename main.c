@@ -1,6 +1,7 @@
 #include "unit_test_util.h"
 #include "SPFIARGame.h"
 #include "SPMiniMaxNode.h"
+#include "SPMiniMax.h"
 #include <stdbool.h>
 
 #define HISTORY_SIZE 20
@@ -108,18 +109,23 @@ int main() {
     spFiarGameSetMove(res, 1);
     spFiarGameSetMove(res, 5);
     spFiarGameSetMove(res, 4);
-    spFiarGameSetMove(res, 3);
+    spFiarGameSetMove(res, 6);
     spFiarGameSetMove(res, 2);
-    spFiarGameSetMove(res, 3);
-    spFiarGameSetMove(res, 3);
+    spFiarGameSetMove(res, 2);
+    spFiarGameSetMove(res, 0);
     spFiarGameSetMove(res, 1);
     spFiarGameSetMove(res, 1);
-    spFiarGameSetMove(res, 2);
-    spFiarGameSetMove(res, 1);
-    spFiarGameSetMove(res, 2);
+    spFiarGameSetMove(res, 0);
+    spFiarGameSetMove(res, 0);
+    spFiarGameSetMove(res, 0);
+    spFiarGameSetMove(res, 0);
+    spFiarGameSetMove(res, 0);
     spFiarGamePrintBoard(res);
-    SPMiniMaxNode *node = createNode(0,0,true,res,SP_FIAR_GAME_PLAYER_1_SYMBOL);
-    int x = scoringFunction(res, node);
+    SPMiniMaxNode *node = createNode(0,0,true,res,SP_FIAR_GAME_PLAYER_1_SYMBOL, -10);
+    char winner = spFiarCheckWinner(res);
+    int score = scoringFunction(res, node);
+//    SPMiniMaxNode *node = createNode(0,0,true,res,SP_FIAR_GAME_PLAYER_1_SYMBOL, -10);
+    int x = spMinimaxSuggestMove(res, 1 );
     spFiarGameDestroy(res);
     return 0;
 }
