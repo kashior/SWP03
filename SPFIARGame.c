@@ -193,6 +193,8 @@ char diagonalWinner(SPFiarGame *src) {
             if (winner != '\0')
                 return winner;
         }
+        player1Counter = 0;
+        player2Counter = 0;
     }
 
     // left to top-right
@@ -202,6 +204,8 @@ char diagonalWinner(SPFiarGame *src) {
             if (winner != '\0')
                 return winner;
         }
+        player1Counter = 0;
+        player2Counter = 0;
     }
 
     // bottom-right to top-left
@@ -211,6 +215,8 @@ char diagonalWinner(SPFiarGame *src) {
             if (winner != '\0')
                 return winner;
         }
+        player1Counter = 0;
+        player2Counter = 0;
     }
 
     // right to top-left
@@ -220,6 +226,8 @@ char diagonalWinner(SPFiarGame *src) {
             if (winner != '\0')
                 return winner;
         }
+        player1Counter = 0;
+        player2Counter = 0;
     }
 
     return '\0';

@@ -118,14 +118,14 @@ int main() {
     spFiarGameSetMove(res, 0);
     spFiarGameSetMove(res, 0);
     spFiarGameSetMove(res, 0);
-    spFiarGameSetMove(res, 0);
-    spFiarGameSetMove(res, 0);
+//    spFiarGameSetMove(res, 0);
+//    spFiarGameSetMove(res, 0);
     spFiarGamePrintBoard(res);
     SPMiniMaxNode *node = createNode(0,0,true,res,SP_FIAR_GAME_PLAYER_1_SYMBOL, -10);
     char winner = spFiarCheckWinner(res);
     int score = scoringFunction(res, node);
 //    SPMiniMaxNode *node = createNode(0,0,true,res,SP_FIAR_GAME_PLAYER_1_SYMBOL, -10);
-    int x = spMinimaxSuggestMove(res, 1 );
+    int x = spMinimaxSuggestMove(res, 2 );
     spFiarGameDestroy(res);
     return 0;
 }
