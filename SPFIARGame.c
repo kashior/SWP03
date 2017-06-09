@@ -167,10 +167,10 @@ char checkSymbol(SPFiarGame *src, int row, int col, int *player1Counter, int *pl
 char rowsColumnsWinner(SPFiarGame *src, int outer, int inner) {
     int player1Counter = 0;
     int player2Counter = 0;
-    char winner;
+    char winner ='\0';
 
     for (int i = 0; i < outer; i++) {
-        for (int j = i; j < inner; j++) {
+        for (int j = 0; j < inner; j++) {
             if(outer == SP_FIAR_GAME_N_ROWS)
                 winner = checkSymbol(src, i, j, &player1Counter, &player2Counter);
             else

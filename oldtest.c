@@ -81,7 +81,7 @@ static bool spFIARGameBasicTest() {
     return true;
 }
 
-int main() {
+int func() {
 
     SPFiarGame* res = spFiarGameCreate(HISTORY_SIZE);
 //    for (int i = 0; i<4; i++) {
@@ -129,7 +129,7 @@ int main() {
     int x = spMinimaxSuggestMove(res, 4);
     spFiarGameDestroy(res);
 
-    printf("x: %d", x);
+
 //    int r = INT_MIN *(-1);
 //    int re = INT_MIN==2 ? 10 : 8;
     return 0;
