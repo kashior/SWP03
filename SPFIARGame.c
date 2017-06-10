@@ -178,6 +178,8 @@ char rowsColumnsWinner(SPFiarGame *src, int outer, int inner) {
             if (winner != '\0')
                 return winner;
         }
+        player1Counter = 0;
+        player2Counter = 0;
     }
     return '\0';
 }
