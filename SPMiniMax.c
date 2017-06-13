@@ -15,5 +15,5 @@ int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth){//TODO 
     SPMiniMaxNode *node = getMove(root, maxDepth);
     if (node ==NULL)
         return -1;
-    return node->move+1;
+    return node->move;
 }

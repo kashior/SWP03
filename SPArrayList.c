@@ -16,6 +16,8 @@ SPArrayList *spArrayListCreate(int maxSize) { //TODO what about initializing the
         free(arr);
         return NULL;
     }
+//    for (int i = 0; i<maxSize; i++)
+//        arr->elements[i] = -1;
 
 
     return arr;

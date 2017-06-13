@@ -14,6 +14,12 @@ SPFiarGame *spFiarGameCreate(int historySize) {
     game->history = spArrayListCreate(historySize);
     if (game->history == NULL)
         return NULL;
+//    printf("history[0] = %d\n",game->history[4]);
+    for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
+        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++) {
+            game->gameBoard[i][j] = '\0';
+        }
+    }
     game->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
     return game;
 }
