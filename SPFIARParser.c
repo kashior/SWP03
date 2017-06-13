@@ -43,7 +43,7 @@ SP_COMMAND getSPComand(char* token){
     }
 }
 
-SPCommand spParserPraseLine(const char* str){ //TODO what if we get more then 2 tokens?
+SPCommand spParserPraseLine(const char* str){
     char str2[1024];
     strcpy(str2, str);
     const char delimiter[15] = " \t\r\n";

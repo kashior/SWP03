@@ -23,55 +23,55 @@ SPMiniMaxNode *createNode(int alpha, int beta, bool isMaxType, SPFiarGame *copyO
 void updateFirstSpanCounter(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
     if (src->gameBoard[row][col] == node->player)
         (*counter)++;
-    else if (src->gameBoard[row][col] != '\0') // it is the opponent!
+    else if (src->gameBoard[row][col] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)--;
 }
 
 void updateSpanCounter(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
     if (src->gameBoard[row][col - 1] == node->player)
         (*counter)--;
-    else if (src->gameBoard[row][col - 1] != '\0') // it is the opponent!
+    else if (src->gameBoard[row][col - 1] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)++;
 
     if (src->gameBoard[row][col + SP_FIAR_GAME_SPAN - 1] == node->player)
         (*counter)++;
-    else if (src->gameBoard[row][col + SP_FIAR_GAME_SPAN - 1] != '\0') // it is the opponent!
+    else if (src->gameBoard[row][col + SP_FIAR_GAME_SPAN - 1] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)--;
 }
 
 void updateSpanCounterTranspose(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
     if (src->gameBoard[row -1][col] == node->player)
         (*counter)--;
-    else if (src->gameBoard[row -1][col] != '\0') // it is the opponent!
+    else if (src->gameBoard[row -1][col] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)++;
 
     if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col ] == node->player)
         (*counter)++;
-    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col ] != '\0') // it is the opponent!
+    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col ] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)--;
 }
 
 void updateDiagLTR(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
     if (src->gameBoard[row-1][col - 1] == node->player)
         (*counter)--;
-    else if (src->gameBoard[row-1][col - 1] != '\0') // it is the opponent!
+    else if (src->gameBoard[row-1][col - 1] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)++;
 
     if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col + SP_FIAR_GAME_SPAN - 1] == node->player)
         (*counter)++;
-    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col + SP_FIAR_GAME_SPAN - 1] != '\0') // it is the opponent!
+    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col + SP_FIAR_GAME_SPAN - 1] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)--;
 }
 
 void updateDiagRTL(SPFiarGame *src, SPMiniMaxNode *node, int row, int col, int *counter){
     if (src->gameBoard[row-1][col + 1] == node->player)
         (*counter)--;
-    else if (src->gameBoard[row-1][col + 1] != '\0') // it is the opponent!
+    else if (src->gameBoard[row-1][col + 1] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)++;
 
     if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col - SP_FIAR_GAME_SPAN + 1] == node->player)
         (*counter)++;
-    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col - SP_FIAR_GAME_SPAN + 1] != '\0') // it is the opponent!
+    else if (src->gameBoard[row+ SP_FIAR_GAME_SPAN - 1][col - SP_FIAR_GAME_SPAN + 1] != SP_FIAR_GAME_EMPTY_ENTRY) // it is the opponent!
         (*counter)--;
 }
 
@@ -177,7 +177,7 @@ int scoringFunction(SPFiarGame *src, SPMiniMaxNode *node) {
     char winner = spFiarCheckWinner(src);
     if (winner == node->player)
         return INT_MAX;
-    else if (winner != '\0')
+    else if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
         return INT_MIN;
     int *array = (int*)malloc((2*(SP_FIAR_GAME_SPAN-1))*sizeof(int));
     assert(array!=NULL);
@@ -198,15 +198,15 @@ int scoringFunction(SPFiarGame *src, SPMiniMaxNode *node) {
 
 char changePlayer(char player){
     if (player != SP_FIAR_GAME_PLAYER_1_SYMBOL && player != SP_FIAR_GAME_PLAYER_2_SYMBOL)
-        return '\0';
+        return SP_FIAR_GAME_EMPTY_ENTRY;
     if (player==SP_FIAR_GAME_PLAYER_1_SYMBOL)
         return SP_FIAR_GAME_PLAYER_2_SYMBOL;
     return SP_FIAR_GAME_PLAYER_1_SYMBOL;
 }
 
 void updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPlayer){
-    char winner = '\0';
-    if ((winner = spFiarCheckWinner(root->game)) != '\0') {
+    char winner = SP_FIAR_GAME_EMPTY_ENTRY;
+    if ((winner = spFiarCheckWinner(root->game)) != SP_FIAR_GAME_EMPTY_ENTRY) {
         root->alpha = totalRootPlayer == winner ? INT_MAX: INT_MIN;
         root->beta = root->alpha;
         return;

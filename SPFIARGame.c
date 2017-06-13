@@ -7,7 +7,8 @@ SPFiarGame *spFiarGameCreate(int historySize) {
         return NULL;
     SPFiarGame *game = (SPFiarGame *) malloc(sizeof(SPFiarGame));
     if (game == NULL) {
-        return NULL;
+        printf("Error: spFiarGameCreate has failed");
+        exit(1);
     }
     for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++)
         game->tops[i] = 0;
@@ -28,8 +29,10 @@ SPFiarGame *spFiarGameCopy(SPFiarGame *src) {
     if (src == NULL)
         return NULL;
     SPFiarGame *copy = (SPFiarGame *) malloc(sizeof(SPFiarGame));
-    if (copy == NULL)
-        return NULL;
+    if (copy == NULL) {
+        printf("Error: spFiarGameCopy has failed");
+        exit(1);
+    }
     for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++) {
             copy->gameBoard[i][j] = src->gameBoard[i][j];
@@ -47,7 +50,8 @@ SPFiarGame *spFiarGameCopy(SPFiarGame *src) {
 }
 
 void spFiarGameDestroy(SPFiarGame *src) {
-    if (src != NULL) {
+    if (src != NULL)
+    {
         free(src->history);
         free(src);
     }

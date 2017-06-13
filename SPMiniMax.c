@@ -15,3 +15,8 @@ int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
         return -1;
     return node->move;
 }
+int computerMove(SPFiarGame* currentGame, unsigned int maxDepth){
+    int col=spMinimaxSuggestMove(currentGame,maxDepth);
+    spFiarGameSetMove(currentGame,col);
+    return col;
+}

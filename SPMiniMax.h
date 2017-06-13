@@ -18,5 +18,5 @@
  */
 int spMinimaxSuggestMove(SPFiarGame* currentGame,
 		unsigned int maxDepth);
-
+int computerMove(SPFiarGame* currentGame, unsigned int maxDepth);
 #endif

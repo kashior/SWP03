@@ -312,7 +312,7 @@ int minimaxunittest() {
 
     RUN_TEST(spFiarSuggestMoveTest4);
 
-
+return 0;
 
 }
 

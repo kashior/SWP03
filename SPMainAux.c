@@ -6,6 +6,8 @@
 #include "SPMiniMax.h"
 #include "SPFIARParser.h"
 
+#define HISTORYSIZE 20
+
 void suggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
     if (currentGame==NULL){
         printf("Error: suggestMove got a NULL game\n");
@@ -25,17 +27,36 @@ void suggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
     printf("Suggested move: drop a disc to column %d\n", col+1);
 }
 
-void undoMove(SPFiarGame* currentGame){
-
+bool undoMove(SPFiarGame* currentGame){
+    int x=currentGame->history->elements[0];
+    SP_FIAR_GAME_MESSAGE msg;
+    msg=spFiarGameUndoPrevMove(currentGame);
+    if(msg==SP_FIAR_GAME_SUCCESS) {
+        printf("Remove disc: remove computer's disc at column %d\n", x);
+        x = currentGame->history->elements[0];
+        spFiarGameUndoPrevMove(currentGame);
+        printf("Remove disc: remove user's disc at column %d\n", x);
+        return 1;
+    }
+    else{
+        printf("Error: cannot undo previous move!\n");
+    }
+    return 0;
 }
 
-void addDisc(SPFiarGame* currentGame, int col);
 
-void quit(SPFiarGame* currentGame);
+void quit(SPFiarGame* currentGame){
+    printf("Exiting...\n");
+    spFiarGameDestroy(currentGame);
+    exit(0);
+}
 
-void restartGame(SPFiarGame* currentGame);
+void restartGame(SPFiarGame* currentGame){
+    printf("Game restarted!\n");
+    spFiarGameDestroy(currentGame);
+}
 
-bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth){
+bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth,char** winner){
     if (!command.validArg) {
         printf("Error: invalid command\n");
         return 0;
@@ -50,7 +71,27 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
     }
     else if (command.cmd == SP_SUGGEST_MOVE){
         suggestMove(currentGame,maxDepth);
+        return 0;
+    }
+    else if (command.cmd==SP_ADD_DISC){  //TODO what if NULL?
+        if(command.arg<1 || command.arg>7){
+            printf("Error: column number must be in range 1-7\n");
+            return 0;
+            }
+        if ( !spFiarGameIsValidMove(currentGame,command.arg-1)) {
+           printf("Error: column %d is full\n",command.arg);
+           return 0;
+        }
+        spFiarGameSetMove(currentGame,command.arg-1);
+        char symbol=(spFiarCheckWinner(currentGame));
+        (*winner)[0] = symbol;
         return 1;
     }
-
+    else if(command.cmd == SP_UNDO_MOVE){
+        if(undoMove(currentGame))
+          return 1;
+        return 0;
+    }
+    return 0;
 }
+
