@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "SPArrayList.h"
 
-SPArrayList *spArrayListCreate(int maxSize) { //TODO what about initializing the elements and actualsize
+SPArrayList *spArrayListCreate(int maxSize) {
     if (maxSize <= 0) {
         return NULL;
     }
@@ -16,8 +16,6 @@ SPArrayList *spArrayListCreate(int maxSize) { //TODO what about initializing the
         free(arr);
         return NULL;
     }
-//    for (int i = 0; i<maxSize; i++)
-//        arr->elements[i] = -1;
 
 
     return arr;
@@ -101,7 +99,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList *src) {
     return spArrayListRemoveAt(src, src->actualSize - 1);
 }
 
-int spArrayListGetAt(SPArrayList *src, int index) { //TODO is -1 ok?
+int spArrayListGetAt(SPArrayList *src, int index) {
     if (src == NULL || index >= src->actualSize || index < 0)
         return -1;
     if (src->actualSize == 0)
@@ -117,7 +115,7 @@ int spArrayListGetLast(SPArrayList *src) {
     return spArrayListGetAt(src, src->actualSize - 1);
 }
 
-int spArrayListMaxCapacity(SPArrayList *src) { //TODO is -1 ok?
+int spArrayListMaxCapacity(SPArrayList *src) {
     if (src == NULL)
         return -1;
     return src->maxSize;
