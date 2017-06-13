@@ -4,6 +4,7 @@
 #include "SPMiniMaxNode.h"
 #include "SPFIARGame.h"
 #include "SPMiniMax.h"
+#include "SPFIARParser.h"
 
 void suggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
     if (currentGame==NULL){
@@ -33,3 +34,23 @@ void addDisc(SPFiarGame* currentGame, int col);
 void quit(SPFiarGame* currentGame);
 
 void restartGame(SPFiarGame* currentGame);
+
+bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth){
+    if (!command.validArg) {
+        printf("Error: invalid command\n");
+        return 0;
+    }
+    else if (command.cmd == SP_QUIT) {
+        quit(currentGame);
+        return 1;
+    }
+    else if (command.cmd == SP_RESTART){
+        restartGame(currentGame);
+        return 1;
+    }
+    else if (command.cmd == SP_SUGGEST_MOVE){
+        suggestMove(currentGame,maxDepth);
+        return 1;
+    }
+
+}

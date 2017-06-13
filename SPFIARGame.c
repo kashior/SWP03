@@ -17,7 +17,7 @@ SPFiarGame *spFiarGameCreate(int historySize) {
 //    printf("history[0] = %d\n",game->history[4]);
     for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++) {
-            game->gameBoard[i][j] = '\0';
+            game->gameBoard[i][j] = SP_FIAR_GAME_EMPTY_ENTRY;
         }
     }
     game->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
@@ -88,7 +88,7 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame *src) {
     SP_ARRAY_LIST_MESSAGE msg = spArrayListRemoveFirst(src->history);
     if (msg == SP_ARRAY_LIST_EMPTY || msg == SP_ARRAY_LIST_INVALID_ARGUMENT)
         return SP_FIAR_GAME_NO_HISTORY;
-    src->gameBoard[src->tops[col] - 1][col] = '\0';
+    src->gameBoard[src->tops[col] - 1][col] = SP_FIAR_GAME_EMPTY_ENTRY;
     src->tops[col]--;
     src->undoCounter++;
     if (src->currentPlayer == SP_FIAR_GAME_PLAYER_1_SYMBOL)
@@ -104,9 +104,9 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
         return SP_FIAR_GAME_INVALID_ARGUMENT;
     char playBoard[SP_FIAR_GAME_N_ROWS+2][SP_FIAR_GAME_N_COLUMNS*2 + 3];
     char toPrint;
-    for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++) {
+    for (int i= 0; i<SP_FIAR_GAME_N_ROWS+2; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS * 2 + 3; j++) {
-            playBoard[i][j] = '\0';
+            playBoard[i][j] = SP_FIAR_GAME_EMPTY_ENTRY;
         }
     }
     for (int i= 0; i<SP_FIAR_GAME_N_ROWS; i++){
@@ -114,18 +114,9 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
 
             if (j==0 || j==SP_FIAR_GAME_N_COLUMNS*2 +2){
                 playBoard[i][j] = '|';
-                playBoard[SP_FIAR_GAME_N_ROWS+1][j] = 32;
             }
-            else if (j%2==1){
-                playBoard[i][j] = 32;
-                playBoard[SP_FIAR_GAME_N_ROWS+1][j] = 32;
-            }
-
-            else {
-                toPrint = src->gameBoard[SP_FIAR_GAME_N_ROWS-i-1][j/2-1];
-                if (toPrint != SP_FIAR_GAME_PLAYER_1_SYMBOL && toPrint != SP_FIAR_GAME_PLAYER_2_SYMBOL)
-                    toPrint = 32;
-                playBoard[i][j] = toPrint;
+            else if (j%2==0){
+                playBoard[i][j] = src->gameBoard[SP_FIAR_GAME_N_ROWS-i-1][j/2-1];
                 playBoard[SP_FIAR_GAME_N_ROWS+1][j] = (j/2) + '0';
             }
             playBoard[SP_FIAR_GAME_N_ROWS][j] = 45;
@@ -166,14 +157,14 @@ char checkSymbol(SPFiarGame *src, int row, int col, int *player1Counter, int *pl
     if ((*player2Counter) == 4) {
         return SP_FIAR_GAME_PLAYER_2_SYMBOL;
     }
-    return '\0';
+    return SP_FIAR_GAME_EMPTY_ENTRY;
 }
 
 
 char rowsColumnsWinner(SPFiarGame *src, int outer, int inner) {
     int player1Counter = 0;
     int player2Counter = 0;
-    char winner ='\0';
+    char winner =SP_FIAR_GAME_EMPTY_ENTRY;
 
     for (int i = 0; i < outer; i++) {
         for (int j = 0; j < inner; j++) {
@@ -181,13 +172,13 @@ char rowsColumnsWinner(SPFiarGame *src, int outer, int inner) {
                 winner = checkSymbol(src, i, j, &player1Counter, &player2Counter);
             else
                 winner = checkSymbol(src, j, i, &player1Counter, &player2Counter);
-            if (winner != '\0')
+            if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
                 return winner;
         }
         player1Counter = 0;
         player2Counter = 0;
     }
-    return '\0';
+    return SP_FIAR_GAME_EMPTY_ENTRY;
 }
 
 char diagonalWinner(SPFiarGame *src) {
@@ -198,7 +189,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS - SP_FIAR_GAME_SPAN + 1; i++) {
         for (int row = 0, col = i; row < SP_FIAR_GAME_N_ROWS && col < SP_FIAR_GAME_N_COLUMNS; row++, col++) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != '\0')
+            if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
                 return winner;
         }
         player1Counter = 0;
@@ -209,7 +200,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = 1; i < SP_FIAR_GAME_N_ROWS - SP_FIAR_GAME_SPAN + 1; i++) {
         for (int row = i, col = 0; row < SP_FIAR_GAME_N_ROWS && col < SP_FIAR_GAME_N_COLUMNS; row++, col++) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != '\0')
+            if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
                 return winner;
         }
         player1Counter = 0;
@@ -220,7 +211,7 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = SP_FIAR_GAME_N_COLUMNS-1; i >= SP_FIAR_GAME_SPAN - 1; i--) {
         for (int row = 0, col = i; row < SP_FIAR_GAME_N_ROWS && col >= 0; row++, col--) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != '\0')
+            if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
                 return winner;
         }
         player1Counter = 0;
@@ -231,33 +222,33 @@ char diagonalWinner(SPFiarGame *src) {
     for (int i = 1; i < SP_FIAR_GAME_N_ROWS - SP_FIAR_GAME_SPAN + 1; i++) {
         for (int row = i, col = SP_FIAR_GAME_N_COLUMNS-1; row < SP_FIAR_GAME_N_ROWS && col >=0; row++, col--) {
             char winner = checkSymbol(src, row, col, &player1Counter, &player2Counter);
-            if (winner != '\0')
+            if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
                 return winner;
         }
         player1Counter = 0;
         player2Counter = 0;
     }
 
-    return '\0';
+    return SP_FIAR_GAME_EMPTY_ENTRY;
 }
 
 
 char spFiarCheckWinner(SPFiarGame *src) {
     char winner = rowsColumnsWinner(src, SP_FIAR_GAME_N_ROWS, SP_FIAR_GAME_N_COLUMNS);
-    if (winner != '\0')
+    if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
         return winner;
 
     winner = rowsColumnsWinner(src, SP_FIAR_GAME_N_COLUMNS, SP_FIAR_GAME_N_ROWS);
-    if (winner != '\0')
+    if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
         return winner;
 
     winner = diagonalWinner(src);
-    if (winner != '\0')
+    if (winner != SP_FIAR_GAME_EMPTY_ENTRY)
         return winner;
 
     for (int j=0; j< SP_FIAR_GAME_N_COLUMNS; j++){
         if (src->tops[j] < SP_FIAR_GAME_N_ROWS)
-            return '\0';
+            return SP_FIAR_GAME_EMPTY_ENTRY;
     }
     return SP_FIAR_GAME_TIE_SYMBOL;
 }
