@@ -4,7 +4,6 @@
 #include <limits.h>
 #include "SPFIARGame.h"
 #include "SPMiniMaxNode.h"
-#include "unit_test_util.h"
 
 const int VECTOR[2*(SP_FIAR_GAME_SPAN-1)] ={-5,-2,-1,1,2,5};
 
@@ -185,6 +184,7 @@ int scoringFunction(SPFiarGame *src, SPMiniMaxNode *node) {
     for (int i = 0 ; i<2*(SP_FIAR_GAME_SPAN-1);i++)
         array[i] = 0;
     rowsColsSpansScoring(src, node, array, SP_FIAR_GAME_N_ROWS, SP_FIAR_GAME_N_COLUMNS);
+
     rowsColsSpansScoring(src, node, array, SP_FIAR_GAME_N_COLUMNS, SP_FIAR_GAME_N_ROWS);
 
     diagonalSpansScoring(src, node,  array);
@@ -204,101 +204,67 @@ char changePlayer(char player){
     return SP_FIAR_GAME_PLAYER_1_SYMBOL;
 }
 
-void *updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPlayer){
+void updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPlayer){
     char winner = '\0';
     if ((winner = spFiarCheckWinner(root->game)) != '\0') {
-//        root->alpha = scoringFunction(root->game,root) == INT_MIN ? INT_MAX-(7-maxDepth) : INT_MIN+(7-maxDepth);
-//        root->alpha = totalRootNode.isMaxType ? INT_MAX-(7-maxDepth) : INT_MIN+(7-maxDepth);
-//        root->alpha = totalRootPlayer == winner ? INT_MAX-(7-maxDepth) : INT_MIN+(7-maxDepth);
         root->alpha = totalRootPlayer == winner ? INT_MAX: INT_MIN;
-//        root->alpha = totalRootPlayer == winner ? INT_MAX : INT_MIN;
-//        if (totalRootNode.player == SP_FIAR_GAME_PLAYER_1_SYMBOL && )
-//        if ()
-//        root->alpha =INT_MIN+(7-maxDepth);
-//        root->alpha = INT_MAX-(7-maxDepth);
-//        root->alpha = INT_MAX;
         root->beta = root->alpha;
-        return NULL;
+        return;
     }
     if (maxDepth == 1){
         SPMiniMaxNode *child;
-//        SPMiniMaxNode *bestNode = root;
         for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++) {
             if (spFiarGameIsValidMove(root->game, i)) {
                 SPFiarGame *copy = spFiarGameCopy(root->game);
                 if (spFiarGameSetMove(copy, i) == SP_FIAR_GAME_SUCCESS) {
                     child = createNode(root->alpha, root->beta, 1 - root->isMaxType, copy, changePlayer(root->player),
                                        i);
-//                    spFiarGamePrintBoard(child->game);
                     child->alpha = root->isMaxType ? scoringFunction(child->game, root) : scoringFunction(child->game, child) ;
-//                    child->alpha = scoringFunction(child->game, root);
                     child->beta = child->alpha;
-//                    printf("we are at depth: %d |\t",maxDepth);
-//                    printf("root is maxNode: %d |\t",root->isMaxType);
-//                    printf("child is maxNode: %d |\t",child->isMaxType);
-//                    printf("root alpha: %d beta: %d |\t",root->alpha, root->beta);
-//                    printf("child alpha: %d beta: %d\n",child->alpha, child->beta);
-//                    printf("we are at depth: %d\n",maxDepth);
                     if (root->isMaxType) {
                         if (root->alpha < child->beta ) {
-//                            bestNode = child;
                             root->alpha = child->beta;
                         }
                     } else {
                         if (root->beta > child->alpha) {
-//                            bestNode = child;
                             root->beta = child->alpha;
                         }
                     }
                     if (root->alpha >= root->beta)
-                        return NULL;
-//                        return root;
+                        return;
 
                 }
             }
         }
-        return NULL;
+        return;
     }
-    while (root->alpha < root->beta){
+
         SPMiniMaxNode *child;
-//        SPMiniMaxNode *currentBestNode = root;
-//        SPMiniMaxNode *bestNode = root;
         for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++){
             if (spFiarGameIsValidMove(root->game, i)) {
                 SPFiarGame *copy = spFiarGameCopy(root->game);
                 if (spFiarGameSetMove(copy, i) == SP_FIAR_GAME_SUCCESS) {
                     child = createNode(root->alpha, root->beta, 1 - root->isMaxType, copy, changePlayer(root->player),
                                        i);
-//                    spFiarGamePrintBoard(child->game);
-
-//                    printf("we are at depth: %d |\t",maxDepth);
-//                    printf("root is maxNode: %d |\t",root->isMaxType);
-//                    printf("child is maxNode: %d |\t",child->isMaxType);
-//                    printf("root alpha: %d beta: %d |\t",root->alpha, root->beta);
-//                    printf("child alpha: %d beta: %d\n",child->alpha, child->beta);
                     updateAlphaBeta(child, maxDepth - 1, totalRootPlayer);
                     if (root->isMaxType) {
                         if (root->alpha < child->beta) {
                             root->alpha = child->beta;
-//                        bestNode = currentBestNode;
                         }
                     } else {
                         if (root->beta > child->alpha) {
                             root->beta = child->alpha;
-//                        bestNode = currentBestNode;
                         }
 
                     }
 
                     if (root->alpha >= root->beta)
-                        return NULL;
+                        return;
                 }
             }
             
         }
-        return NULL;
-    }
-
+        return;
 }
 
 SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth){
@@ -313,9 +279,9 @@ SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth){
                 if (spFiarGameSetMove(copy, i) == SP_FIAR_GAME_SUCCESS) {
                     child = createNode(root->alpha, root->beta, 1 - root->isMaxType, copy, changePlayer(root->player),
                                        i);
-//                    spFiarGamePrintBoard(child->game);
+
                     child->alpha = scoringFunction(child->game, root);
-//                    child->alpha = root->isMaxType ? scoringFunction(child->game, root) : scoringFunction(child->game, root) ;
+
                     child->beta = child->alpha;
                     if (root->isMaxType) {
                         if (root->alpha < child->beta) {
@@ -323,12 +289,6 @@ SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth){
                             root->alpha = child->beta;
                         }
                     }
-//                    else {
-//                        if (root->beta > child->alpha) {
-//                            bestNode = child;
-//                            root->beta = child->alpha;
-//                        }
-//                    }
                     if (root->alpha >= root->beta)
                         return bestNode;
 
@@ -347,14 +307,6 @@ SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth){
                 if (spFiarGameSetMove(copy, i) == SP_FIAR_GAME_SUCCESS) {
                     child = createNode(root->alpha, root->beta, 1 - root->isMaxType, copy, changePlayer(root->player),
                                        i);
-//                    spFiarGamePrintBoard(child->game);
-//                    printf("we are at depth: %d |\t",maxDepth);
-//                    printf("root is maxNode: %d |\t",root->isMaxType);
-//                    printf("child is maxNode: %d |\t",child->isMaxType);
-//                    printf("root alpha: %d beta: %d |\t",root->alpha, root->beta);
-//                    printf("child alpha: %d beta: %d\n",child->alpha, child->beta);
-//                    if (maxDepth ==7)
-//                        printf("======================================\n");
                     updateAlphaBeta(child,maxDepth-1,root->player);
 
                     if (root->alpha < child->beta) {

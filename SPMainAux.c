@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPFIARGame.h"
-#include "SPMiniMaxNode.c"
-#include "SPFIARGame.c"
+#include "SPMiniMaxNode.h"
+#include "SPFIARGame.h"
 #include "SPMiniMax.h"
 
 void suggestMove(SPFiarGame* currentGame, unsigned int maxDepth){

@@ -55,16 +55,16 @@ SPCommand spParserPraseLine(const char* str){ //TODO what if we get more then 2 
     if (result.cmd == SP_INVALID_LINE){
         result.validArg = false;
     }
-    else if (result.cmd != SP_ADD_DISC && token != NULL){
+    else if (result.cmd != SP_ADD_DISC && token != '\0'){
         result.validArg = false;
     }
-    else if (result.cmd == SP_ADD_DISC && token == NULL){
+    else if (result.cmd == SP_ADD_DISC && token == '\0'){
         result.validArg = false;
     }
-    else if (result.cmd != SP_ADD_DISC && token == NULL){
+    else if (result.cmd != SP_ADD_DISC && token == '\0'){
         result.validArg = true;
     }
-    else if (result.cmd == SP_ADD_DISC && token != NULL){
+    else if (result.cmd == SP_ADD_DISC && token != '\0'){
         if (!spParserIsInt(token)){
             result.validArg = false;
         }
@@ -73,6 +73,10 @@ SPCommand spParserPraseLine(const char* str){ //TODO what if we get more then 2 
             result.validArg = true;
         }
     }
+    token = strtok(NULL, delimiter);
+    if(token!='\0')
+        result.validArg = false;
+
     return result;
 }
 

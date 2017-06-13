@@ -1,9 +1,10 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPFIARGame.h"
-//#include "SPMiniMaxNode.h"
-//#include "SPMiniMax.h"
-//#include "SPArrayList.h"
+#include "SPMiniMaxNode.h"
+#include "SPMiniMax.h"
+#include "SPArrayList.h"
 #include "SPFIARParser.h"
 #include "SPMainAux.h"
 
