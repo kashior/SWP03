@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "SPFIARGame.h"
 #include "SPMiniMaxNode.h"
 #include "SPFIARGame.h"
@@ -106,6 +107,8 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
              do {
                  printf("Please enter the difficulty level between [1-7]:\n");
                  scanf("%s", levelChar);
+                 if (!strcmp(levelChar,"quit"))
+                     quit(*game);
                  (*level) = (unsigned int) atoi(levelChar);
                  if ((*level) < 1 || (*level) > 7)
                      printf("Error: invalid level (should be between 1 to 7)\n");
@@ -130,12 +133,10 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
          if(command.cmd==SP_RESTART)
              initGame=1;
      }
-     free(levelChar);
-     char theWinner=winner[0];
-     free(winner);
      spFiarGamePrintBoard(*game);
-     return theWinner;
+     return winner[0];
  }
+
 bool  checkCommandAfterGameisOver(SPCommand command,SPFiarGame** currentGame ){
     if (!command.validArg) {
         printf("Error: invalid command\n");
