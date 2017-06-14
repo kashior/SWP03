@@ -33,7 +33,7 @@ SP_COMMAND getSPComand(char* token){
     }else if (strcmp(token, "quit") == 0)
     {
         return SP_QUIT;
-    }else if (strcmp(token, "restart") == 0)
+    }else if (strcmp(token, "restart_game") == 0)
     {
         return SP_RESTART;
     }

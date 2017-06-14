@@ -1,11 +1,7 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
+
 #include "SPFIARGame.h"
-#include "SPMiniMaxNode.h"
-#include "SPMiniMax.h"
-#include "SPArrayList.h"
+
 #include "SPFIARParser.h"
 #include "SPMainAux.h"
 
@@ -14,7 +10,6 @@
 
 int main(){
 
-
     SPFiarGame *game ;
     bool initGame=1;
     unsigned int level=0;
@@ -22,8 +17,7 @@ int main(){
     SPCommand command;
     do {
         command=gameOver(&game, winner);
-        playFIAR(&game, (command.cmd == SP_RESTART), &level);
+        winner = playFIAR(&game, (command.cmd == SP_RESTART), &level);
     } while(command.cmd != SP_QUIT);
     return 0;
-
 }

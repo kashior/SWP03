@@ -35,8 +35,8 @@ SPArrayList *spArrayListCopy(SPArrayList *src) {
     arr->elements = (int *) malloc(src->maxSize * sizeof(int));
     if (arr->elements == NULL) {
         free(arr);
-            printf("Error: spArrayListCopy has failed");
-            exit(1);
+        printf("Error: spArrayListCopy has failed");
+        return NULL;
     }
     for (int i = 0; i < src->actualSize; i++)
         arr->elements[i] = src->elements[i];
