@@ -9,21 +9,23 @@
 
 #define HISTORYSIZE 20
 
-void suggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
+int suggestMove(SPFiarGame *currentGame, unsigned int maxDepth){
     if (currentGame==NULL){
         printf("Error: suggestMove got a NULL game\n");
-        return;
+        return 1;
     }
     char winner = spFiarCheckWinner(currentGame);
     if (winner==SP_FIAR_GAME_PLAYER_1_SYMBOL || winner == SP_FIAR_GAME_PLAYER_2_SYMBOL
             || winner == SP_FIAR_GAME_TIE_SYMBOL){
         printf("Error: the game is over\n");
-        return;
+        return 1;
     }
     int col = spMinimaxSuggestMove(currentGame,maxDepth);
+    if (col == -2)
+        return -2;
     if (col < 0 || col > SP_FIAR_GAME_N_COLUMNS-1){
-        printf("Error: spMinimaxSuggestMove() returned invalid output\n");
-        return;
+        printf("Error: spMinimaxSuggestMove returned invalid output\n");
+        return 1;
     }
     printf("Suggested move: drop a disc to column %d\n", col+1);
 }
@@ -71,7 +73,11 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
         return 1;
     }
     else if (command.cmd == SP_SUGGEST_MOVE){
-        suggestMove(currentGame,maxDepth);
+        int successful = suggestMove(currentGame,maxDepth);
+        if (successful==-2) {
+            spFiarGameDestroy(currentGame);
+            exit(1);
+        }
         return 0;
     }
     else if (command.cmd==SP_ADD_DISC){
@@ -114,6 +120,8 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
                      printf("Error: invalid level (should be between 1 to 7)\n");
              } while ((*level) < 1 || (*level) > 7);
              (*game) = spFiarGameCreate(HISTORYSIZE);
+             if (*game == NULL)
+                 exit(1);
          }
          spFiarGamePrintBoard(*game);
          printf("Please make the next move:\n");
@@ -125,6 +133,10 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
          } while (!proccesComand(*game, command, (*level), winner));
          if (command.cmd == SP_ADD_DISC && winner[0]==SP_FIAR_GAME_EMPTY_ENTRY) {
              colOfComputer = computerMove(*game, (*level),winner);
+             if (colOfComputer==-2){
+                 spFiarGameDestroy(*game);
+                 exit(1);
+             }
              printf("Computer move: add disc to column %d\n", colOfComputer+1);
              initGame=0;
          }

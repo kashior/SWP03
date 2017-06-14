@@ -17,7 +17,6 @@ SPFiarGame *spFiarGameCreate(int historySize) {
     if (game->history==NULL)
     {
         free(game);
-        printf("Error: spFiarGameCreate has failed");
         return NULL;
     }
     for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
@@ -56,6 +55,7 @@ SPFiarGame *spFiarGameCopy(SPFiarGame *src) {
 void spFiarGameDestroy(SPFiarGame *src) {
     if (src != NULL)
     {
+        free(src->history->elements);
         free(src->history);
         free(src);
     }

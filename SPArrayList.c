@@ -8,7 +8,7 @@ SPArrayList *spArrayListCreate(int maxSize) {
     }
     SPArrayList *arr = (SPArrayList *) malloc(sizeof(SPArrayList));
     if (arr == NULL) {
-        free(arr);
+//        free(arr);
         printf("Error: spArrayListCreate has failed");
         return NULL;
     }
@@ -16,7 +16,7 @@ SPArrayList *spArrayListCreate(int maxSize) {
     arr->actualSize = 0;
     arr->elements = (int *) malloc(maxSize * sizeof(int));
     if (arr->elements == NULL) {
-        free(arr->elements);
+//        free(arr->elements);
         free(arr);
         printf("Error: spArrayListCreate has failed");
         return NULL;
@@ -28,9 +28,9 @@ SPArrayList *spArrayListCreate(int maxSize) {
 
 SPArrayList *spArrayListCopy(SPArrayList *src) {
     SPArrayList *arr = (SPArrayList *) malloc(src->maxSize * sizeof(int));
-    if (arr == NULL || src->elements == NULL){
+    if (arr == NULL){
         printf("Error: spArrayListCopy has failed");
-        exit(1);
+        return NULL;
     }
     arr->elements = (int *) malloc(src->maxSize * sizeof(int));
     if (arr->elements == NULL) {

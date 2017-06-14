@@ -9,14 +9,19 @@ int spMinimaxSuggestMove(SPFiarGame* currentGame, unsigned int maxDepth){
         return -1;
     if (maxDepth<=0 || maxDepth > 7)
         return -1;
-    SPMiniMaxNode *root = createNode(INT_MIN, INT_MAX, 1,spFiarGameCopy(currentGame),currentGame->currentPlayer, -1);
+    SPFiarGame *copy = spFiarGameCopy(currentGame);
+    if (copy==NULL)
+        return -2;
+    SPMiniMaxNode *root = createNode(INT_MIN, INT_MAX, 1,copy,currentGame->currentPlayer, -1);
     SPMiniMaxNode *node = getMove(root, maxDepth);
     if (node ==NULL)
-        return -1;
+        return -2;
     return node->move;
 }
 int computerMove(SPFiarGame* currentGame, unsigned int maxDepth, char* winner){
     int col=spMinimaxSuggestMove(currentGame,maxDepth);
+    if (col ==-2)
+        return -2;
     spFiarGameSetMove(currentGame,col);
     winner[0]=spFiarCheckWinner(currentGame);
 

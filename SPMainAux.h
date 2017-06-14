@@ -4,7 +4,7 @@
 #include "SPFIARGame.h"
 
 //put auxiliary functions and constants used by the main function here.
-void suggestMove(SPFiarGame* currentGame, unsigned int maxDepth);
+int suggestMove(SPFiarGame *currentGame, unsigned int maxDepth);
 
 void undoMove(SPFiarGame* currentGame);
 

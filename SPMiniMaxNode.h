@@ -21,7 +21,7 @@ int scoringFunction(SPFiarGame *currentGame, SPMiniMaxNode *node);
 
 SPMiniMaxNode *createNode(int alpha, int beta, bool isMaxType, SPFiarGame *copyOfGame, char player, int move);
 
-void updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPlayer);
+int updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPlayer);
 
 SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth);
 
