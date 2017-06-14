@@ -93,21 +93,11 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
 }
 
  char playFIAR(SPFiarGame** game,bool initGame, unsigned int* level){
-     char* levelChar=malloc(1024);
-     if(levelChar==NULL)
-     {
-         printf("Error: main has failed");
-         exit(1);
-     }
+     char levelChar[1024];
 
      int colOfComputer=0;
      char str[1024];
-     char *winner =malloc(sizeof(char));
-     if(winner==NULL)
-     {
-         printf("Error: main has failed");
-         exit(1);
-     }
+     char winner[1];
      winner[0]=SP_FIAR_GAME_EMPTY_ENTRY;
      SPCommand command;
 
