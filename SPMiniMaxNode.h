@@ -25,7 +25,7 @@ void updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootP
 
 SPMiniMaxNode *getMove(SPMiniMaxNode *root, unsigned int maxDepth);
 
-char changePlayer(char player);
+char getOtherPlayer(char player);
 
 
 #endif

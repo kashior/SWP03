@@ -118,7 +118,7 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
                  scanf("%s", levelChar);
                  (*level) = (unsigned int) atoi(levelChar);
                  if ((*level) < 1 || (*level) > 7)
-                     printf("Error: invalid (*level) (should be between 1 to 7)\n");
+                     printf("Error: invalid level (should be between 1 to 7)\n");
              } while ((*level) < 1 || (*level) > 7);
              (*game) = spFiarGameCreate(HISTORYSIZE);
          }

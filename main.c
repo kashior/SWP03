@@ -19,8 +19,11 @@ int main(){
     bool initGame=1;
     unsigned int level=0;
     char winner = playFIAR(&game,initGame,&level);
-    SPCommand command=gameOver(&game, winner);
-    playFIAR(&game,(command.cmd==SP_RESTART), &level);
-
+    SPCommand command;
+    do {
+        command=gameOver(&game, winner);
+        playFIAR(&game, (command.cmd == SP_RESTART), &level);
+    } while(command.cmd != SP_QUIT);
     return 0;
+
 }
