@@ -92,14 +92,14 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
     return 0;
 }
 
- char playFIAR(SPFiarGame** game,bool initGame){
+ char playFIAR(SPFiarGame** game,bool initGame, unsigned int* level){
      char* levelChar=malloc(1024);
      if(levelChar==NULL)
      {
          printf("Error: main has failed");
          exit(1);
      }
-     unsigned int level=0;
+
      int colOfComputer=0;
      char str[1024];
      char *winner =malloc(sizeof(char));
@@ -116,10 +116,10 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
              do {
                  printf("Please enter the difficulty level between [1-7]:\n");
                  scanf("%s", levelChar);
-                 level = (unsigned int) atoi(levelChar);
-                 if (level < 1 || level > 7)
-                     printf("Error: invalid level (should be between 1 to 7)\n");
-             } while (level < 1 || level > 7);
+                 (*level) = (unsigned int) atoi(levelChar);
+                 if ((*level) < 1 || (*level) > 7)
+                     printf("Error: invalid (*level) (should be between 1 to 7)\n");
+             } while ((*level) < 1 || (*level) > 7);
              (*game) = spFiarGameCreate(HISTORYSIZE);
          }
          spFiarGamePrintBoard(*game);
@@ -129,9 +129,9 @@ bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxD
              fgets(str, 1024, stdin);
              scanf("%[^\n]s", str);
              command = spParserPraseLine(str);
-         } while (!proccesComand(*game, command, level, winner));
+         } while (!proccesComand(*game, command, (*level), winner));
          if (command.cmd == SP_ADD_DISC && winner[0]==SP_FIAR_GAME_EMPTY_ENTRY) {
-             colOfComputer = computerMove(*game, level,winner);
+             colOfComputer = computerMove(*game, (*level),winner);
              printf("Computer move: add disc to column %d\n", colOfComputer+1);
              initGame=0;
          }

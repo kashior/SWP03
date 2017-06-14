@@ -17,7 +17,9 @@ int main(){
 
     SPFiarGame *game ;
     bool initGame=1;
-    char winner = playFIAR(&game,initGame);
+    unsigned int level=0;
+    char winner = playFIAR(&game,initGame,&level);
+
 //    while (winner[0] == SP_FIAR_GAME_EMPTY_ENTRY){
 //        if(initGame==1) {
 //            do {
@@ -62,7 +64,7 @@ int main(){
         scanf("%[^\n]s", str);
         command = spParserPraseLine(str);
     }while(!checkCommandAfterGameisOver(command,&game));
-    playFIAR(&game,(command.cmd==SP_RESTART));
+    playFIAR(&game,(command.cmd==SP_RESTART), &level);
 
     return 0;
 }
