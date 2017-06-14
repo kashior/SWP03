@@ -7,15 +7,19 @@ SPArrayList *spArrayListCreate(int maxSize) {
         return NULL;
     }
     SPArrayList *arr = (SPArrayList *) malloc(sizeof(SPArrayList));
-    if (arr == NULL)
+    if (arr == NULL) {
+        free(arr);
+        printf("Error: spArrayListCreate has failed");
         return NULL;
+    }
     arr->maxSize = maxSize;
     arr->actualSize = 0;
     arr->elements = (int *) malloc(maxSize * sizeof(int));
     if (arr->elements == NULL) {
+        free(arr->elements);
         free(arr);
         printf("Error: spArrayListCreate has failed");
-        exit(1);
+        return NULL;
     }
 
 

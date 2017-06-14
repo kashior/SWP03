@@ -7,15 +7,19 @@ SPFiarGame *spFiarGameCreate(int historySize) {
         return NULL;
     SPFiarGame *game = (SPFiarGame *) malloc(sizeof(SPFiarGame));
     if (game == NULL) {
+        free(game);
         printf("Error: spFiarGameCreate has failed");
-        exit(1);
+        return NULL;
     }
     for (int i = 0; i<SP_FIAR_GAME_N_COLUMNS; i++)
         game->tops[i] = 0;
     game->history = spArrayListCreate(historySize);
-    if (game->history == NULL)
+    if (game->history==NULL)
+    {
+        free(game);
+        printf("Error: spFiarGameCreate has failed");
         return NULL;
-//    printf("history[0] = %d\n",game->history[4]);
+    }
     for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++) {
             game->gameBoard[i][j] = SP_FIAR_GAME_EMPTY_ENTRY;
@@ -107,7 +111,6 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
     if (src==NULL)
         return SP_FIAR_GAME_INVALID_ARGUMENT;
     char playBoard[SP_FIAR_GAME_N_ROWS+2][SP_FIAR_GAME_N_COLUMNS*2 + 3];
-    char toPrint;
     for (int i= 0; i<SP_FIAR_GAME_N_ROWS+2; i++) {
         for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS * 2 + 3; j++) {
             playBoard[i][j] = SP_FIAR_GAME_EMPTY_ENTRY;
