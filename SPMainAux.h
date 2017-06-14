@@ -14,6 +14,10 @@ void quit(SPFiarGame* currentGame);
 
 void restartGame(SPFiarGame* currentGame);
 
-bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth, char** winner);
+bool proccesComand(SPFiarGame* currentGame, SPCommand command, unsigned int maxDepth, char* winner);
+
+char playFIAR(SPFiarGame** game,bool initGame);
+
+bool  checkCommandAfterGameisOver(SPCommand command,SPFiarGame** currentGame );
 
 #endif
