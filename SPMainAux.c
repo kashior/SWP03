@@ -164,5 +164,22 @@ bool  checkCommandAfterGameisOver(SPCommand command,SPFiarGame** currentGame ){
     printf("Error: the game is over\n");
     return 0;
 
+}
+SPCommand gameOver(SPFiarGame** game, char winner) {
+    SPCommand command;
+    if(winner==SP_FIAR_GAME_TIE_SYMBOL)
+        printf("Game over: it’s a tie\nPlease enter ‘quit’ to exit or ‘restart’ to start a new game!\n");
+    else if(winner==SP_FIAR_GAME_PLAYER_1_SYMBOL)
+        printf("Game over: you win\nPlease enter ‘quit’ to exit or ‘restart’ to start a new game!\n");
+    else if(winner==SP_FIAR_GAME_PLAYER_2_SYMBOL)
+        printf("Game over: computer wins\nPlease enter ‘quit’ to exit or ‘restart’ to start a new game!\n");
+    char str[1024];
 
+    do {
+        fflush(stdin);
+        fgets(str, 1024, stdin);
+        scanf("%[^\n]s", str);
+        command = spParserPraseLine(str);
+    }while(!checkCommandAfterGameisOver(command,game));
+    return command;
 }

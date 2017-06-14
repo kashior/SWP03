@@ -20,4 +20,6 @@ char playFIAR(SPFiarGame** game,bool initGame, unsigned int* level);
 
 bool  checkCommandAfterGameisOver(SPCommand command,SPFiarGame** currentGame );
 
+SPCommand gameOver(SPFiarGame** game, char winner);
+
 #endif
