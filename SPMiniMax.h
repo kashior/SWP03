@@ -18,5 +18,17 @@
  */
 int spMinimaxSuggestMove(SPFiarGame* currentGame,
 		unsigned int maxDepth);
+
+/**
+ * Given a game state, this function uses spMinimaxSuggestMove to get the
+ * number of the column the MinMax algorithm chooses, playes the move for
+ * the computer and updates the winner as necessary
+ *
+ *
+ * @param currentGame - The current game state
+ * @param maxDepth - The maximum depth of the miniMax algorithm
+ * @param winner - a pointer to the winner of the game, ' ' if the  game is not over
+ * @return int representing the column number the computer chose
+ */
 int computerMove(SPFiarGame* currentGame, unsigned int maxDepth, char* winner);
 #endif
