@@ -10,6 +10,7 @@
  *
  * scoringFunction          - return the score of the current game
  * createNode               - Creates a SPMiniMaxNode representing a move in the algorithm.
+ * updateScoreOfRoot         - update the alpha or beta of root according to it's type - max or min
  * updateAlphaBeta          - recursively update the alpha and beta values of the nodes
  *                             in the subtree of the current node
  * getMove                  - returns the best move for the player according to the algorithm
@@ -47,6 +48,14 @@ int scoringFunction(SPFiarGame *currentGame, SPMiniMaxNode *node);
  * a pointer to the new node
  */
 SPMiniMaxNode *createNode(int alpha, int beta, bool isMaxType, SPFiarGame *copyOfGame, char player, int move);
+
+/**
+ * update the alpha or beta of root according to it's type, max or min, and according to
+ * the child's value if it improves the root's state
+ * @param root - root node of the current subtree
+ * @param child - child of the current subtree root
+ */
+void updateScoreOfRoot(SPMiniMaxNode *root, SPMiniMaxNode *child);
 
 /**
  *  recursively update the alpha and beta values of the nodes

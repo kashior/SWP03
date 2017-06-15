@@ -205,6 +205,18 @@ char getOtherPlayer(char player) {
     return SP_FIAR_GAME_PLAYER_1_SYMBOL;
 }
 
+void updateScoreOfRoot(SPMiniMaxNode *root, SPMiniMaxNode *child){
+    if (root->isMaxType) {
+        if (root->alpha < child->beta) {
+            root->alpha = child->beta;
+        }
+    } else {
+        if (root->beta > child->alpha) {
+            root->beta = child->alpha;
+        }
+    }
+}
+
 int updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPlayer) {
     char winner = spFiarCheckWinner(root->game);
     if (totalRootPlayer == winner) {
@@ -231,15 +243,7 @@ int updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPl
                     child->alpha = root->isMaxType ? scoringFunction(child->game, root) : scoringFunction(child->game,
                                                                                                           child);
                     child->beta = child->alpha;
-                    if (root->isMaxType) {
-                        if (root->alpha < child->beta) {
-                            root->alpha = child->beta;
-                        }
-                    } else {
-                        if (root->beta > child->alpha) {
-                            root->beta = child->alpha;
-                        }
-                    }
+                    updateScoreOfRoot(root,child);
                     if (root->alpha >= root->beta)
                         return 1;
                 }
@@ -254,22 +258,13 @@ int updateAlphaBeta(SPMiniMaxNode *root, unsigned int maxDepth, char totalRootPl
             if (copy == NULL)
                 return -2;
             if (spFiarGameSetMove(copy, i) == SP_FIAR_GAME_SUCCESS) {
-                child = createNode(root->alpha, root->beta, 1 - root->isMaxType, copy, getOtherPlayer(root->player),
-                                   i);
+                child = createNode(root->alpha, root->beta, 1 - root->isMaxType, copy, getOtherPlayer(root->player),i);
                 if (child == NULL)
                     return -2;
                 int successful = updateAlphaBeta(child, maxDepth - 1, totalRootPlayer);
                 if (successful == -2)
                     return -2;
-                if (root->isMaxType) {
-                    if (root->alpha < child->beta) {
-                        root->alpha = child->beta;
-                    }
-                } else {
-                    if (root->beta > child->alpha) {
-                        root->beta = child->alpha;
-                    }
-                }
+                updateScoreOfRoot(root,child);
                 if (root->alpha >= root->beta)
                     return 1;
             }
