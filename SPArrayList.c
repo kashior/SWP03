@@ -56,13 +56,8 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList *src) {
     if (src == NULL)
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     else {
-        free(src->elements);
-        src->elements = (int *) malloc(src->maxSize * sizeof(int));
-        if(src->elements==NULL)
-        {
-            printf("Error: spArrayListClear has failed");
-            exit(1);
-        }
+        for (int i = 0; i< src->maxSize; i++)
+            src->elements[i] = 0;
         src->actualSize = 0;
         return SP_ARRAY_LIST_SUCCESS;
     }

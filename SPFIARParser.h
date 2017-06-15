@@ -46,5 +46,13 @@ bool spParserIsInt(const char* str);
  *   arg      - the integer argument in case validArg is set to true
  */
 SPCommand spParserPraseLine(const char* str);
+
+/**
+ *
+ * @param string - represant an SPComand
+ * @return
+ * the SPComand represanted by the input if the input matches a leagal one
+ * or SP_INVALID_LINE if input does not match any SPComand
+ */
 SP_COMMAND getSPComand(char* token); //TODO documenting!
 #endif

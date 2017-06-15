@@ -1,5 +1,7 @@
 
 
+#include <string.h>
+#include <printf.h>
 #include "SPFIARGame.h"
 
 #include "SPFIARParser.h"
@@ -20,4 +22,5 @@ int main(){
         winner = playFIAR(&game, (command.cmd == SP_RESTART), &level);
     } while(command.cmd != SP_QUIT);
     return 0;
+
 }

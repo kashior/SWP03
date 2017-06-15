@@ -54,8 +54,7 @@ SPFiarGame *spFiarGameCopy(SPFiarGame *src) {
 void spFiarGameDestroy(SPFiarGame *src) {
     if (src != NULL)
     {
-        free(src->history->elements);
-        free(src->history);
+        spArrayListDestroy(src->history);
         free(src);
     }
 }
