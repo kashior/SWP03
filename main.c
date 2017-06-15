@@ -1,14 +1,8 @@
 
 
-#include <string.h>
-#include <printf.h>
 #include "SPFIARGame.h"
-
 #include "SPFIARParser.h"
 #include "SPMainAux.h"
-
-#define HISTORYSIZE 20
-
 
 int main(){
 
@@ -21,6 +15,7 @@ int main(){
         command=gameOver(&game, winner);
         winner = playFIAR(&game, (command.cmd == SP_RESTART), &level);
     } while(command.cmd != SP_QUIT);
-    return 0;
 
+    return 0;
 }
+

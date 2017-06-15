@@ -1,5 +1,8 @@
 #ifndef SPFIARGAME_H_
 #define SPFIARGAME_H_
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include "SPArrayList.h"
 
@@ -30,23 +33,21 @@
 #define SP_FIAR_GAME_EMPTY_ENTRY ' '
 
 typedef struct sp_fiar_game_t {
-	char gameBoard[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
-	int tops[SP_FIAR_GAME_N_COLUMNS];
-	char currentPlayer;
-	SPArrayList* history;
-	int undoCounter;
-	//You May add any fields you like
+    char gameBoard[SP_FIAR_GAME_N_ROWS][SP_FIAR_GAME_N_COLUMNS];
+    int tops[SP_FIAR_GAME_N_COLUMNS];
+    char currentPlayer;
+    SPArrayList *history; // saves all the history of the game - has a maxsize
+    int undoCounter; // counts the number of undo's
 } SPFiarGame;
 
 /**
  * Type used for returning error codes from game functions
  */
 typedef enum sp_fiar_game_message_t {
-	SP_FIAR_GAME_INVALID_MOVE,
-	SP_FIAR_GAME_INVALID_ARGUMENT,
-	SP_FIAR_GAME_NO_HISTORY,
-	SP_FIAR_GAME_SUCCESS,
-//You may add any message you like
+    SP_FIAR_GAME_INVALID_MOVE,
+    SP_FIAR_GAME_INVALID_ARGUMENT,
+    SP_FIAR_GAME_NO_HISTORY,
+    SP_FIAR_GAME_SUCCESS,
 } SP_FIAR_GAME_MESSAGE;
 
 /**
@@ -61,7 +62,7 @@ typedef enum sp_fiar_game_message_t {
  * NULL if either a memory allocation failure occurs or historySize <= 0.
  * Otherwise, a new game instant is returned.
  */
-SPFiarGame* spFiarGameCreate(int historySize);
+SPFiarGame *spFiarGameCreate(int historySize);
 
 /**
  *	Creates a copy of a given game.
@@ -73,7 +74,7 @@ SPFiarGame* spFiarGameCreate(int historySize);
  *	Otherwise, an new copy of the source game is returned.
  *
  */
-SPFiarGame* spFiarGameCopy(SPFiarGame* src);
+SPFiarGame *spFiarGameCopy(SPFiarGame *src);
 
 /**
  * Frees all memory allocation associated with a given game. If src==NULL
@@ -81,7 +82,7 @@ SPFiarGame* spFiarGameCopy(SPFiarGame* src);
  *
  * @param src - the source game
  */
-void spFiarGameDestroy(SPFiarGame* src);
+void spFiarGameDestroy(SPFiarGame *src);
 
 /**
  * Sets the next move in a given game by specifying column index. The
@@ -94,7 +95,7 @@ void spFiarGameDestroy(SPFiarGame* src);
  * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
  * SP_FIAR_GAME_SUCCESS - otherwise
  */
-SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col);
+SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame *src, int col);
 
 /**
  * Checks if a disk can be put in the specified column.
@@ -105,7 +106,7 @@ SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col);
  * true  - if the a disc can be put in the target column
  * false - otherwise.
  */
-bool spFiarGameIsValidMove(SPFiarGame* src, int col);
+bool spFiarGameIsValidMove(SPFiarGame *src, int col);
 
 /**
  * Removes a disc that was put in the previous move and changes the current
@@ -120,7 +121,7 @@ bool spFiarGameIsValidMove(SPFiarGame* src, int col);
  * SP_FIAR_GAME_SUCCESS          - on success. The last disc that was put on the
  *                                 board is removed and the current player is changed
  */
-SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src);
+SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame *src);
 
 /**
  * On success, the function prints the board game. If an error occurs, then the
@@ -133,7 +134,7 @@ SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src);
  * SP_FIAR_GAME_SUCCESS - otherwise
  *
  */
-SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src);
+SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame *src);
 
 /**
  * Returns the current player of the specified game.
@@ -143,7 +144,7 @@ SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src);
  * SP_FIAR_GAME_PLAYER_2_SYMBOL - if it's player two's turn
  * SP_FIAR_GAME_EMPTY_ENTRY     - otherwise
  */
-char spFiarGameGetCurrentPlayer(SPFiarGame* src);
+char spFiarGameGetCurrentPlayer(SPFiarGame *src);
 
 /**
 * Checks if there's a winner in the specified game status. The function returns either
@@ -158,11 +159,47 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src);
 * SP_FIAR_GAME_TIE_SYMBOL - If the game is over and there's a tie
 * null character - otherwise
 */
-char spFiarCheckWinner(SPFiarGame* src);
+char spFiarCheckWinner(SPFiarGame *src);
 
-char checkSymbol(SPFiarGame* src, int row, int col, int *player1Counter, int *player2Counter);
+/**
+ *  A help function for rowsColumnsWinner and  diagonalWinner
+ *  Checks the symbol of each cell in the board and return to the main function the current status
+ *  about number of 'X''s and 'O''s in a specified area
+ * @param src - the source game
+ * @param row - the row to check in
+ * @param col - the column to check in
+ * @param player1Counter - count the times 'X' appeared
+ * @param player2Counter - count the times 'O' appeared
+ * @return
+ * SP_FIAR_GAME_PLAYER_1_SYMBOL - if player 1 won
+ * SP_FIAR_GAME_PLAYER_2_SYMBOL - if player 2 won
+ * SP_FIAR_GAME_EMPTY_ENTRY - if there is no winner at this specified area
+ */
+char checkSymbol(SPFiarGame *src, int row, int col, int *player1Counter, int *player2Counter);
 
-char rowsColumnsWinner(SPFiarGame* src, int outer, int inner);
+/**
+ *  A help function for spFiarCheckWinner
+ *  Checks in O(n) complexity if there's a winner in the game.
+ *  The function can scan vertical or horizontal(depend ob the inner and outer loops) for a winner in the game
+ * @param src - the source game
+ * @param outer - the row to check in
+ * @param inner - the column to check in
+ * @return
+ * SP_FIAR_GAME_PLAYER_1_SYMBOL - if player 1 won
+ * SP_FIAR_GAME_PLAYER_2_SYMBOL - if player 2 won
+ * SP_FIAR_GAME_EMPTY_ENTRY - if there is no winner at the moment vertical or horizontal wise
+ */
+char rowsColumnsWinner(SPFiarGame *src, int outer, int inner);
+/**
+ * A help function for spFiarCheckWinner
+ * Checks in O(n) complexity if there's a winner in the game.
+ *  The function scans all the diagonal possibilities for winning the game
+ * @param src - the source game
+ * @return
+ * SP_FIAR_GAME_PLAYER_1_SYMBOL - if player 1 won
+ * SP_FIAR_GAME_PLAYER_2_SYMBOL - if player 2 won
+ * SP_FIAR_GAME_EMPTY_ENTRY - if there is no winner at the moment diagonal wise
+ */
+char diagonalWinner(SPFiarGame *src);
 
-char diagonalWinner(SPFiarGame* src);
 #endif
